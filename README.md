@@ -14,6 +14,17 @@
 
 </div>
 
+--- LOCAL --- XAMPP
+
+LINK: http://localhost:8080/SGBV/
+
+LINK: http://localhost/SGBV/
+
+--- Servidor ---
+
+Proximamente...
+
+---
 ---
 
 ## 📖 Índice de Contenidos
@@ -117,20 +128,20 @@ Abre tu navegador y entra a:
 
 El archivo `SgbvDB.sql` incluye usuarios preconfigurados y listos para probar ambas interfaces del sistema:
 
-| Rol | Correo Electrónico | Contraseña | Saldo Inicial | Permisos Destacados |
+| Rol | Correo Electrónico | Contraseña |
 | :--- | :--- | :--- | :---: | :--- |
-| **Administrador** | `admin@sgbv.com` | **`admin123`** | `$1,000.00` | Gestión total del catálogo, visualización de analíticas, reportes y billetera. |
-| **Lector Estándar** | `lector@sgbv.com` | **`lector123`** | `$50.00` | Alquiler de libros, carrito de compras, lectura en visor y gestión personal. |
-| **Lector de Prueba 2** | `ana@sgbv.com` | **`lector123`** | `$25.50` | Cuenta de lectora con préstamos históricos ya registrados. |
-| **Lector de Prueba 3** | `carlos@sgbv.com` | **`lector123`** | `$15.00` | Cuenta de lector para pruebas multi-usuario. |
+| **Administrador** | `admin@sgbv.com` | **`admin123`** |
+| **Lector Estándar** | `lector@sgbv.com` | **`lector123`** |
+| **Lector de Prueba 2** | `ana@sgbv.com` | **`lector123`** |
+| **Lector de Prueba 3** | `carlos@sgbv.com` | **`lector123`** |
 
 ---
 
 
 ## 🛠️ Stack Tecnológico
 
-- **Backend:** PHP 8+ (Orientado a Objetos + Funciones nativas de tipado estricto `declare(strict_types=1)`).
-- **Base de Datos:** MySQL / MariaDB (Motor relacional InnoDB con soporte de llaves foráneas).
+- **Backend:** PHP 8+ (Orientado a Objetos + Funciones nativas de tipado estricto ).
+- **Base de Datos:** MySQL (Motor relacional InnoDB con soporte de llaves foráneas).
 - **Capa de Datos:** PHP Data Objects (`PDO`) con *prepared statements* para prevenir inyecciones SQL.
 - **Frontend / Styling:** Vanilla CSS moderno con variables CSS personalizadas, Glassmorphism, Bootstrap 5.3 y Bootstrap Icons (`bi`).
 - **Control de Rutas:** Enrutamiento nativo a través de un *Front Controller* (`index.php`) y `.htaccess`.
