@@ -22,10 +22,7 @@
 - [📁 Estructura de Carpetas](#-estructura-de-carpetas)
 - [🚀 Instalación y Puesta en Marcha](#-instalación-y-puesta-en-marcha)
 - [🔑 Credenciales de Prueba (Seeders)](#-credenciales-de-prueba-seeders)
-- [🛣️ Enrutamiento y Puntos de Acceso](#️-enrutamiento-y-puntos-de-acceso)
 - [🛠️ Stack Tecnológico](#️-stack-tecnológico)
-- [🛡️ Seguridad y Buenas Prácticas](#-seguridad-y-buenas-prácticas)
-- [📄 Licencia](#-licencia)
 
 ---
 
@@ -139,3 +136,7 @@ El archivo `SgbvDB.sql` incluye usuarios preconfigurados y listos para probar am
 - **Control de Rutas:** Enrutamiento nativo a través de un *Front Controller* (`index.php`) y `.htaccess`.
 
 ---
+## 👥 Equipo de Desarrollo 
+
+* **Ricardo Peña García**
+* **Eddual Rafael Corniel**
