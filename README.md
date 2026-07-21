@@ -151,3 +151,4 @@ El archivo `SgbvDB.sql` incluye usuarios preconfigurados y listos para probar am
 
 * **Ricardo Peña García**
 * **Eddual Rafael Corniel**
+* **Dalvin Ant. Sierra Medina**
