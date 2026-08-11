@@ -179,12 +179,12 @@ class Usuario {
      */
     public static function porCedula(string $cedula): ?Usuario {
         $pdo = Database::getConnection();
-        $cedulaEnc = CryptoHelper::encrypt($cedula);
+        $cedulaHash = hash('sha256', $cedula);
 
         // Buscamos tanto en formato encriptado como en texto plano anterior por retrocompatibilidad
-        $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE cedula = :cedula_enc OR cedula = :cedula_plana LIMIT 1");
+        $stmt = $pdo->prepare("SELECT * FROM usuarios WHERE cedula = :cedula_hash OR cedula = :cedula_plana LIMIT 1");
         $stmt->execute([
-            'cedula_enc' => $cedulaEnc,
+            'cedula_hash' => $cedulaHash,
             'cedula_plana' => trim($cedula)
         ]);
         $row = $stmt->fetch();
@@ -217,7 +217,7 @@ class Usuario {
         $pdo = Database::getConnection();
         
         $hashPassword = password_hash($passwordTextoPlano, PASSWORD_DEFAULT);
-        $cedulaEnc = CryptoHelper::encrypt($cedula);
+        $cedulaHash = hash('sha256', $cedula);
         // Al registrar, el lector inicia con cédula verificada en 1 para facilitar demos instantáneas
         $cedulaVerificada = 1;
         $correoVerificado = 1;
@@ -232,7 +232,7 @@ class Usuario {
                 'nombre' => $nombre,
                 'correo' => $correo,
                 'password' => $hashPassword,
-                'cedula' => $cedulaEnc,
+                'cedula' => $cedulaHash,
                 'fecha_nacimiento' => $fechaNacimiento,
                 'rol_id' => $rolId,
                 'cedula_verificada' => $cedulaVerificada,
@@ -290,7 +290,7 @@ class Usuario {
             $row['nombre'],
             $row['correo'],
             $row['password'],
-            CryptoHelper::decrypt($row['cedula'] ?? ''),
+            $row['cedula'] ?? '',
             $row['fecha_nacimiento'],
             (int)$row['rol_id'],
             ((int)$row['cedula_verificada']) === 1,

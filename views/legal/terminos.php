@@ -9,7 +9,6 @@ require_once __DIR__ . '/../../layouts/header.php';
             <div class="glass-card p-4 p-md-5 animate-fade-in border-secondary shadow-lg">
                 <div class="d-flex align-items-center justify-content-between mb-4 pb-3 border-bottom border-secondary flex-wrap gap-2">
                     <div>
-                        <span class="badge bg-info text-dark px-3 py-1 mb-2"><i class="bi bi-file-earmark-text-fill me-1"></i> SGBV Legal</span>
                         <h1 class="fw-extrabold text-gradient mb-0 display-6">Términos y Condiciones de Uso y Renta</h1>
                     </div>
                     <span class="text-secondary small">Vigencia: Año <?= date('Y') ?></span>
@@ -25,17 +24,17 @@ require_once __DIR__ . '/../../layouts/header.php';
                         SGBV opera como un ecosistema literario en línea bajo el modelo de renta virtual con plazos acotados. La adquisición de una renta de recurso digital no otorga la propiedad del archivo al usuario, sino un derecho de lectura, visualización o reproducción de voz alta limitado y exclusivo dentro de nuestra plataforma digital por un periodo exacto de <strong>catorce (14) días calendario</strong>.
                     </p>
 
-                    <h4 class="fw-bold mt-4 mb-3 text-gradient-accent"><i class="bi bi-clock-history me-2"></i> 2. Plazos y Vencimiento Automático (Tarea 10)</h4>
+                    <h4 class="fw-bold mt-4 mb-3 text-gradient-accent"><i class="bi bi-clock-history me-2"></i> 2. Plazos y Vencimiento Automático</h4>
                     <p>
-                        A diferencia de las bibliotecas físicas tradicionales donde existen sanciones pecuniarias por retraso, en SGBV <strong>el estado de alquiler nunca entra en mora ni genera multas por retraso de entrega</strong>. Al cumplirse exactamente los 14 días desde la fecha transaccional de préstamo, nuestro sistema automatizado procede al retiro transaccional del recurso, cambiando su estado a <code>devuelto</code> e incrementando automáticamente la disponibilidad en el inventario del catálogo.
+                        A diferencia de las bibliotecas físicas tradicionales donde existen sanciones pecuniarias por retraso, en SGBV <strong>el estado de alquiler nunca entra en mora ni genera multas por retraso de entrega</strong>. Al cumplirse exactamente los 14 días desde la fecha transaccional de préstamo, nuestro sistema procede al retiro transaccional del recurso para que usted no tenga que preocuparse por nada.
                     </p>
 
-                    <h4 class="fw-bold mt-4 mb-3 text-gradient-accent"><i class="bi bi-wallet-fill me-2"></i> 3. Moneda Transaccional y Recargas (Créditos ⛃)</h4>
+                    <h4 class="fw-bold mt-4 mb-3 text-gradient-accent"><i class="bi bi-wallet-fill me-2"></i> 3. Moneda Transaccional y Recargas (Créditos SGBV)</h4>
                     <p>
-                        Todas las rentas literarias dentro del sistema se valorizan y procesan exclusivamente a través de nuestra unidad interna denominada <strong>Créditos SGBV (⛃)</strong>. Las recargas realizadas en el panel del usuario o billetera son de carácter no reembolsable en dinero fiduciario y están destinadas exclusivamente a la renta en línea de libros, audiolibros y artículos del catálogo SGBV.
+                        Todas las rentas literarias dentro del sistema se valorizan y procesan exclusivamente a través de nuestra unidad interna denominada <strong>Créditos SGBV </strong>. Las recargas realizadas en el panel del usuario o billetera son de carácter no reembolsable en dinero fiduciario y están destinadas exclusivamente a la renta en línea de libros, audiolibros y artículos del catálogo SGBV.
                     </p>
 
-                    <h4 class="fw-bold mt-4 mb-3 text-gradient-accent"><i class="bi bi-shield-x me-2"></i> 4. Protección del Derecho de Autor y Prohibición de Duplicación (Tarea 15)</h4>
+                    <h4 class="fw-bold mt-4 mb-3 text-gradient-accent"><i class="bi bi-shield-x me-2"></i> 4. Protección del Derecho de Autor y Prohibición de Duplicación</h4>
                     <p>
                         El Visor de Lectura Digital incorpora medidas activas y pasivas de seguridad para proteger a los autores y editoriales aliadas:
                     </p>

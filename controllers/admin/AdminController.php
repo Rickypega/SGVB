@@ -294,7 +294,7 @@ class AdminController {
             } elseif ($tipo === 'usuarios') {
                 echo '<th>#</th><th>Nombre Lector</th><th>Correo</th><th>Cédula</th><th>Rol</th><th>Saldo (⛃)</th><th>Fecha Registro</th></tr></thead><tbody>';
                 foreach ($datos as $u) {
-                    echo '<tr><td><span class="badge">#' . $u->id . '</span></td><td><strong>' . htmlspecialchars($u->nombre) . '</strong></td><td>' . htmlspecialchars($u->correo) . '</td><td>' . htmlspecialchars($u->cedula) . '</td><td>' . ($u->rol_id === 1 ? 'Administrador' : 'Lector Estándar') . '</td><td>' . number_format($u->saldo, 2) . ' ⛃</td><td>' . $u->fecha_registro . '</td></tr>';
+                    echo '<tr><td><span class="badge">#' . $u->id . '</span></td><td><strong>' . htmlspecialchars($u->nombre) . '</strong></td><td>' . htmlspecialchars($u->correo) . '</td><td>Oculta (Hash)</td><td>' . ($u->rol_id === 1 ? 'Administrador' : 'Lector Estándar') . '</td><td>' . number_format($u->saldo, 2) . ' ⛃</td><td>' . $u->fecha_registro . '</td></tr>';
                 }
             } else {
                 echo '<th>#</th><th>Lector</th><th>Correo</th><th>Recurso Rentado</th><th>Tipo</th><th>Fecha Préstamo</th><th>Límite 14d</th><th>Devolución</th><th>Monto (⛃)</th><th>Estado</th></tr></thead><tbody>';
@@ -337,7 +337,7 @@ class AdminController {
                     '#' . $u->id,
                     $u->nombre,
                     $u->correo,
-                    $u->cedula,
+                    'Oculta (Hash)',
                     $u->rol_id === 1 ? 'Administrador General' : 'Lector Estándar',
                     number_format($u->saldo, 2),
                     $u->fecha_registro

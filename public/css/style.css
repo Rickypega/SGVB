@@ -256,7 +256,8 @@ h6,
 
 .book-cover-placeholder {
     font-size: 4rem;
-    color: rgba(255, 255, 255, 0.15);
+    color: var(--text-secondary);
+    opacity: 0.15;
 }
 
 .book-badge-type {
@@ -450,6 +451,13 @@ h6,
     color: var(--text-primary);
     border-radius: 0.75rem;
     padding: 0.75rem 1rem;
+}
+
+.form-control::placeholder,
+.form-select::placeholder,
+.search-input::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.7;
 }
 
 .form-control:focus,

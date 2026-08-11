@@ -38,9 +38,9 @@ require_once __DIR__ . '/../../layouts/header.php';
                             <label class="form-label text-light small">Cédula o Documento de Identidad <span class="badge bg-secondary ms-2">Inmutable</span></label>
                             <div class="input-group">
                                 <span class="input-group-text bg-dark border-secondary text-secondary"><i class="bi bi-card-heading"></i></span>
-                                <input type="text" class="form-control bg-dark text-muted border-secondary" value="<?= htmlspecialchars($usuario->cedula) ?>" readonly disabled>
+                                <input type="text" class="form-control bg-dark text-muted border-secondary" value="Oculta por seguridad" readonly disabled>
                             </div>
-                            <div class="form-text text-secondary small">La cédula está asociada a tu registro de auditoría en biblioteca y no puede modificarse.</div>
+                            <div class="form-text text-secondary small">La cédula está hasheada y asociada a tu registro de auditoría, no puede modificarse ni visualizarse.</div>
                         </div>
 
                         <div class="mb-3">
