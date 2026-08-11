@@ -9,7 +9,7 @@ require_once __DIR__ . '/../layouts/header.php';
                 <div class="position-absolute top-0 start-50 translate-middle-x w-50" style="height: 3px; background: linear-gradient(90deg, transparent, #06b6d4, transparent);"></div>
                 
                 <div class="text-center mb-4">
-                    <div class="d-inline-flex align-items-center justify-content-center bg-dark border border-secondary rounded-circle p-3 mb-3 text-info fs-2">
+                    <div class="d-inline-flex align-items-center justify-content-center mb-3 fs-1 text-gradient-accent">
                         <i class="bi bi-person-plus-fill"></i>
                     </div>
                     <h2 class="fw-bold text-gradient">Registro de Nuevo Lector</h2>

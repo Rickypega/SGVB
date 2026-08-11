@@ -24,7 +24,7 @@ require_once __DIR__ . '/../../layouts/header.php';
         <div class="col-md-4">
             <div class="glass-card p-4 h-100 d-flex flex-column justify-content-between">
                 <div>
-                    <div class="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 text-primary rounded-circle p-3 mb-3 fs-3">
+                    <div class="d-inline-flex align-items-center justify-content-center text-primary mb-3 fs-1">
                         <i class="bi bi-book-half"></i>
                     </div>
                     <h5 class="fw-bold text-light">Inventario de Recursos</h5>
@@ -44,7 +44,7 @@ require_once __DIR__ . '/../../layouts/header.php';
         <div class="col-md-4">
             <div class="glass-card p-4 h-100 d-flex flex-column justify-content-between">
                 <div>
-                    <div class="d-inline-flex align-items-center justify-content-center bg-info bg-opacity-10 text-info rounded-circle p-3 mb-3 fs-3">
+                    <div class="d-inline-flex align-items-center justify-content-center text-info mb-3 fs-1">
                         <i class="bi bi-people-fill"></i>
                     </div>
                     <h5 class="fw-bold text-light">Padrón de Lectores</h5>
@@ -64,7 +64,7 @@ require_once __DIR__ . '/../../layouts/header.php';
         <div class="col-md-4">
             <div class="glass-card p-4 h-100 d-flex flex-column justify-content-between">
                 <div>
-                    <div class="d-inline-flex align-items-center justify-content-center bg-success bg-opacity-10 text-success rounded-circle p-3 mb-3 fs-3">
+                    <div class="d-inline-flex align-items-center justify-content-center text-success mb-3 fs-1">
                         <i class="bi bi-arrow-left-right"></i>
                     </div>
                     <h5 class="fw-bold text-light">Flujo y Préstamos</h5>

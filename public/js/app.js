@@ -276,3 +276,31 @@ document.addEventListener('DOMContentLoaded', function() {
     inicializarMascarasYRestricciones();
 });
 
+// Lógica para cambiar de tema (claro/oscuro)
+document.addEventListener('DOMContentLoaded', () => {
+    const themeToggleBtn = document.getElementById('themeToggleBtn');
+    if (themeToggleBtn) {
+        // Inicializar tema desde localStorage o por defecto (oscuro)
+        const currentTheme = localStorage.getItem('theme') || 'dark';
+        if (currentTheme === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+            themeToggleBtn.textContent = '☼';
+        } else {
+            document.documentElement.removeAttribute('data-theme');
+            themeToggleBtn.textContent = '☽';
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            const isLight = document.documentElement.getAttribute('data-theme') === 'light';
+            if (isLight) {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('theme', 'dark');
+                themeToggleBtn.textContent = '☽';
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+                themeToggleBtn.textContent = '☼';
+            }
+        });
+    }
+});

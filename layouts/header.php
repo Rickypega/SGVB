@@ -24,9 +24,12 @@ $usuarioActual = (isset($_SESSION['usuario']) && $_SESSION['usuario'] instanceof
 
 <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top">
     <div class="container">
-        <a class="navbar-brand" href="<?= BASE_URL ?>home">
-            <i class="bi bi-book-half"></i> SGBV <span class="fs-6 fw-normal text-secondary d-none d-sm-inline">| Biblioteca Digital</span>
-        </a>
+        <div class="d-flex align-items-center">
+            <span id="themeToggleBtn" class="me-2" style="cursor: pointer; font-size: 1.4rem; user-select: none; line-height: 1;" title="Cambiar tema">☽</span>
+            <a class="navbar-brand m-0" href="<?= BASE_URL ?>home">
+                <i class="bi bi-book-half"></i> SGBV <span class="fs-6 fw-normal text-secondary d-none d-sm-inline">| Biblioteca Digital</span>
+            </a>
+        </div>
         <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>

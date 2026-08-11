@@ -18,7 +18,7 @@ require_once __DIR__ . '/../layouts/header.php';
                             </p>
 
                             <div class="d-flex align-items-center gap-3 mb-4">
-                                <div class="bg-dark border border-secondary text-info rounded-circle p-3 d-flex align-items-center justify-content-center fs-4" style="width: 50px; height: 50px;">
+                                <div class="text-info d-flex align-items-center justify-content-center fs-2" style="width: 50px; height: 50px;">
                                     <i class="bi bi-envelope-check"></i>
                                 </div>
                                 <div>
@@ -28,7 +28,7 @@ require_once __DIR__ . '/../layouts/header.php';
                             </div>
 
                             <div class="d-flex align-items-center gap-3 mb-4">
-                                <div class="bg-dark border border-secondary text-warning rounded-circle p-3 d-flex align-items-center justify-content-center fs-4" style="width: 50px; height: 50px;">
+                                <div class="text-warning d-flex align-items-center justify-content-center fs-2" style="width: 50px; height: 50px;">
                                     <i class="bi bi-building"></i>
                                 </div>
                                 <div>
@@ -38,7 +38,7 @@ require_once __DIR__ . '/../layouts/header.php';
                             </div>
 
                             <div class="d-flex align-items-center gap-3">
-                                <div class="bg-dark border border-secondary text-success rounded-circle p-3 d-flex align-items-center justify-content-center fs-4" style="width: 50px; height: 50px;">
+                                <div class="text-success d-flex align-items-center justify-content-center fs-2" style="width: 50px; height: 50px;">
                                     <i class="bi bi-clock"></i>
                                 </div>
                                 <div>

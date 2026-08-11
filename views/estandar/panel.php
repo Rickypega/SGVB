@@ -35,7 +35,7 @@ require_once __DIR__ . '/../../layouts/header.php';
 
         <div class="col-lg-5">
             <!-- Tarjeta de Billetera Virtual -->
-            <div class="glass-card p-4 p-md-5 h-100 position-relative border-primary" style="background: linear-gradient(145deg, rgba(30,41,59,0.9), rgba(15,23,42,0.95));">
+            <div class="glass-card p-4 p-md-5 h-100 position-relative border-primary">
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <span class="text-secondary text-uppercase fw-semibold tracking-wider small"><i class="bi bi-wallet-fill text-info me-2"></i>Billetera Virtual SGBV</span>
                     <span class="badge bg-success-subtle text-success border border-success px-2 py-1 small">Activa</span>

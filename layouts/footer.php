@@ -185,6 +185,6 @@
 </script>
 <script src="<?= BASE_URL ?>public/js/search.js"></script>
 <script src="<?= BASE_URL ?>public/js/table-utils.js"></script>
-<script src="<?= BASE_URL ?>public/js/app.js"></script>
+<script src="<?= BASE_URL ?>public/js/app.js?v=<?= file_exists(__DIR__ . '/../public/js/app.js') ? filemtime(__DIR__ . '/../public/js/app.js') : time() ?>"></script>
 </body>
 </html>

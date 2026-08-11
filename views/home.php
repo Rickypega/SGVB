@@ -6,9 +6,7 @@ require_once __DIR__ . '/../layouts/header.php';
 <!-- Hero Banner Premium -->
 <section class="hero-banner text-center">
     <div class="container position-relative z-1">
-        <span class="badge rounded-pill bg-dark border border-secondary px-3 py-2 text-info mb-3">
-            <i class="bi bi-sparkles me-1"></i> Sistema de Gestión de Bibliotecas Virtuales 2.0
-        </span>
+
         <h1 class="display-3 fw-extrabold text-gradient mb-3">
             Explora Nuestra <span class="text-gradient-accent">Biblioteca Digital</span>
         </h1>
@@ -124,7 +122,7 @@ require_once __DIR__ . '/../layouts/header.php';
         <div class="row g-4 text-center">
             <div class="col-md-4">
                 <div class="p-3">
-                    <div class="d-inline-flex align-items-center justify-content-center bg-dark border border-secondary rounded-circle p-3 mb-3 text-primary fs-3">
+                    <div class="d-inline-flex align-items-center justify-content-center mb-3 text-primary fs-1">
                         <i class="bi bi-wallet2"></i>
                     </div>
                     <h5 class="fw-bold">Billetera Virtual Integrada</h5>
@@ -133,7 +131,7 @@ require_once __DIR__ . '/../layouts/header.php';
             </div>
             <div class="col-md-4">
                 <div class="p-3">
-                    <div class="d-inline-flex align-items-center justify-content-center bg-dark border border-secondary rounded-circle p-3 mb-3 text-info fs-3">
+                    <div class="d-inline-flex align-items-center justify-content-center mb-3 text-info fs-1">
                         <i class="bi bi-calendar-check"></i>
                     </div>
                     <h5 class="fw-bold">Préstamos de 14 Días</h5>
@@ -142,7 +140,7 @@ require_once __DIR__ . '/../layouts/header.php';
             </div>
             <div class="col-md-4">
                 <div class="p-3">
-                    <div class="d-inline-flex align-items-center justify-content-center bg-dark border border-secondary rounded-circle p-3 mb-3 text-success fs-3">
+                    <div class="d-inline-flex align-items-center justify-content-center mb-3 text-success fs-1">
                         <i class="bi bi-shield-check"></i>
                     </div>
                     <h5 class="fw-bold">Seguridad y Control de Edad</h5>
