@@ -20,13 +20,8 @@ if (session_status() === PHP_SESSION_NONE) {
 header('Content-Type: text/html; charset=utf-8');
 date_default_timezone_set('America/Santo_Domingo');
 
-// Calcular BASE_URL dinámicamente (funciona en local /SGVB/ y en InfinityFree /)
-$scriptName = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME'] ?? '/'));
-$baseUrl = rtrim($scriptName, '/') . '/';
-if ($baseUrl !== '/' && !str_ends_with($baseUrl, '/')) {
-    $baseUrl .= '/';
-}
-define('BASE_URL', $baseUrl);
+// URL base de producción para InfinityFree
+define('BASE_URL', 'https://sgbv.infinityfreeapp.com/');
 
 // Cargar enrutador
 require_once __DIR__ . '/routes/web.php';

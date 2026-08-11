@@ -13,10 +13,14 @@ $usuarioActual = (isset($_SESSION['usuario']) && $_SESSION['usuario'] instanceof
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= htmlspecialchars($tituloPagina ?? 'SGBV - Sistema de Gestión de Bibliotecas Virtuales') ?></title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%230d6efd' class='bi bi-book-half' viewBox='0 0 16 16'%3E%3Cpath d='M8.5 2.687c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z'/%3E%3C/svg%3E">
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <!-- Custom Premium CSS -->
     <link rel="stylesheet" href="<?= BASE_URL ?>public/css/style.css?v=<?= file_exists(__DIR__ . '/../public/css/style.css') ? filemtime(__DIR__ . '/../public/css/style.css') : time() ?>">
 </head>
@@ -25,7 +29,6 @@ $usuarioActual = (isset($_SESSION['usuario']) && $_SESSION['usuario'] instanceof
 <nav class="navbar navbar-expand-lg navbar-dark navbar-custom sticky-top">
     <div class="container">
         <div class="d-flex align-items-center">
-            <span id="themeToggleBtn" class="me-2" style="cursor: pointer; font-size: 1.4rem; user-select: none; line-height: 1;" title="Cambiar tema">☽</span>
             <a class="navbar-brand m-0" href="<?= BASE_URL ?>home">
                 <i class="bi bi-book-half"></i> SGBV <span class="fs-6 fw-normal text-secondary d-none d-sm-inline">| Biblioteca Digital</span>
             </a>
@@ -62,6 +65,11 @@ $usuarioActual = (isset($_SESSION['usuario']) && $_SESSION['usuario'] instanceof
             </ul>
 
             <div class="d-flex align-items-center gap-3">
+                <!-- Toggle Theme -->
+                <button type="button" id="themeToggleBtn" class="btn btn-link text-secondary p-0 m-0 text-decoration-none" style="font-size: 1.2rem; transition: color 0.3s;" title="Cambiar tema">
+                    <i class="bi bi-moon-stars-fill"></i>
+                </button>
+
                 <?php if ($usuarioActual): ?>
                     <button class="btn btn-outline-custom position-relative d-flex align-items-center gap-2 py-1 px-3" type="button" data-bs-toggle="offcanvas" data-bs-target="#cartOffcanvas" aria-controls="cartOffcanvas" title="Ver carrito de préstamos">
                         <i class="bi bi-cart3 text-info fs-5"></i>
@@ -86,6 +94,7 @@ $usuarioActual = (isset($_SESSION['usuario']) && $_SESSION['usuario'] instanceof
                                 <li><a class="dropdown-item" href="<?= BASE_URL ?>home"><i class="bi bi-grid me-2"></i> Catálogo Literario</a></li>
                                 <li><a class="dropdown-item" href="<?= BASE_URL ?>estandar/panel"><i class="bi bi-bookmark-star me-2"></i> Mi Panel & Préstamos</a></li>
                                 <li><a class="dropdown-item" href="<?= BASE_URL ?>libreria/mis_libros"><i class="bi bi-collection-play-fill me-2"></i> Mi Librería</a></li>
+                                <li><a class="dropdown-item" href="<?= BASE_URL ?>billetera"><i class="bi bi-wallet2 me-2"></i> Mi Billetera SGBV</a></li>
                             <?php endif; ?>
                             <li><hr class="dropdown-divider border-secondary"></li>
                             <li><a class="dropdown-item" href="<?= BASE_URL ?>usuario/configuracion"><i class="bi bi-gear me-2"></i> Configuración de Cuenta</a></li>
@@ -148,20 +157,46 @@ if ($usuarioActual && $usuarioActual->rol_id === 2):
     <!-- Contenedor de notificaciones globales -->
     <div class="container mt-3">
         <?php if (!empty($_SESSION['error'])): ?>
-            <div class="alert alert-danger alert-dismissible fade show rounded-4 border-0 shadow-lg d-flex align-items-center gap-2 animate-fade-in" role="alert">
-                <i class="bi bi-exclamation-triangle-fill fs-4 text-danger"></i>
-                <div><?= htmlspecialchars($_SESSION['error']) ?></div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: <?= json_encode($_SESSION['error']) ?>,
+                        confirmButtonColor: '#0d6efd'
+                    });
+                });
+            </script>
             <?php unset($_SESSION['error']); ?>
         <?php endif; ?>
 
         <?php if (!empty($_SESSION['exito'])): ?>
-            <div class="alert alert-success alert-dismissible fade show rounded-4 border-0 shadow-lg d-flex align-items-center gap-2 animate-fade-in" role="alert">
-                <i class="bi bi-check-circle-fill fs-4 text-success"></i>
-                <div><?= htmlspecialchars($_SESSION['exito']) ?></div>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    Swal.fire({
+                        icon: 'success',
+                        title: '¡Éxito!',
+                        text: <?= json_encode($_SESSION['exito']) ?>,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        showConfirmButton: false
+                    });
+                });
+            </script>
             <?php unset($_SESSION['exito']); ?>
+        <?php endif; ?>
+
+        <?php if (!empty($_SESSION['warning'])): ?>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Atención',
+                        text: <?= json_encode($_SESSION['warning']) ?>,
+                        confirmButtonColor: '#f59e0b'
+                    });
+                });
+            </script>
+            <?php unset($_SESSION['warning']); ?>
         <?php endif; ?>
     </div>

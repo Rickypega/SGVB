@@ -8,12 +8,11 @@ declare(strict_types=1);
 class Database {
     private static ?PDO $instance = null;
 
-    // Configuración por defecto para XAMPP / Localhost
-    // Para InfinityFree, ajusta DB_HOST, DB_NAME, DB_USER y DB_PASS
-    private const DB_HOST = 'localhost';
-    private const DB_NAME = 'sgbv_db';
-    private const DB_USER = 'root';
-    private const DB_PASS = '';
+    // Configuración para Producción (InfinityFree)
+    private const DB_HOST = 'sql208.infinityfree.com';
+    private const DB_NAME = 'if0_41631473_sgbv';
+    private const DB_USER = 'if0_41631473';
+    private const DB_PASS = '40230246353';
     private const DB_CHARSET = 'utf8mb4';
 
     /**

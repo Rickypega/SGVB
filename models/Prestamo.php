@@ -130,7 +130,7 @@ class Prestamo {
         if ($stmtVal->fetch()) {
             return [
                 'exito' => false,
-                'mensaje' => 'Ya rentaste el libro "' . $recurso->titulo . '" y se encuentra activo en tu librería. Para conservarlo más tiempo debes utilizar la opción de extender/renovar el préstamo y así evitar agotar el stock.'
+                'mensaje' => 'Ya tienes este libro alquilado actualmente'
             ];
         }
 
@@ -463,7 +463,7 @@ class Prestamo {
      */
     public static function obtenerGananciasTotales(): float {
         $pdo = Database::getConnection();
-        $stmt = $pdo->query("SELECT SUM(monto_pagado) FROM prestamos WHERE estado != 'reservado'");
+        $stmt = $pdo->query("SELECT SUM(monto) FROM transacciones_dinero_real");
         $val = $stmt->fetchColumn();
         return $val ? round((float)$val, 2) : 0.00;
     }

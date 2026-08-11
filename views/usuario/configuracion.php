@@ -34,14 +34,6 @@ require_once __DIR__ . '/../../layouts/header.php';
                     <p class="text-secondary small mb-4">Actualiza tus datos básicos e información para notificaciones de préstamos.</p>
 
                     <form action="<?= BASE_URL ?>usuario/actualizar" method="POST">
-                        <div class="mb-3">
-                            <label class="form-label text-light small">Cédula o Documento de Identidad <span class="badge bg-secondary ms-2">Inmutable</span></label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-dark border-secondary text-secondary"><i class="bi bi-card-heading"></i></span>
-                                <input type="text" class="form-control bg-dark text-muted border-secondary" value="Oculta por seguridad" readonly disabled>
-                            </div>
-                            <div class="form-text text-secondary small">La cédula está hasheada y asociada a tu registro de auditoría, no puede modificarse ni visualizarse.</div>
-                        </div>
 
                         <div class="mb-3">
                             <label class="form-label text-light small">Nombre Completo *</label>
@@ -71,7 +63,12 @@ require_once __DIR__ . '/../../layouts/header.php';
                             <label class="form-label text-light small">Contraseña de Confirmación *</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-dark border-secondary text-secondary"><i class="bi bi-key"></i></span>
-                                <input type="password" class="form-control" name="password_confirmar_datos" required placeholder="Ingresa tu contraseña para autorizar cambios">
+                            <div class="position-relative">
+                                <input type="password" class="form-control pe-5" name="password_confirmar_datos" required placeholder="Ingresa tu contraseña para autorizar cambios">
+                                <span class="position-absolute top-50 end-0 translate-middle-y me-3 toggle-password" style="cursor: pointer; color: #6c757d; z-index: 10;">
+                                    <i class="bi bi-eye-fill"></i>
+                                </span>
+                            </div>
                             </div>
                         </div>
 
@@ -100,7 +97,12 @@ require_once __DIR__ . '/../../layouts/header.php';
                             <label class="form-label text-light small">Contraseña Actual *</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-dark border-secondary text-secondary"><i class="bi bi-key"></i></span>
-                                <input type="password" class="form-control" name="password_anterior" required placeholder="Escribe tu contraseña actual">
+                            <div class="position-relative">
+                                <input type="password" class="form-control pe-5" name="password_anterior" required placeholder="Escribe tu contraseña actual">
+                                <span class="position-absolute top-50 end-0 translate-middle-y me-3 toggle-password" style="cursor: pointer; color: #6c757d; z-index: 10;">
+                                    <i class="bi bi-eye-fill"></i>
+                                </span>
+                            </div>
                             </div>
                         </div>
 
@@ -108,7 +110,12 @@ require_once __DIR__ . '/../../layouts/header.php';
                             <label class="form-label text-light small">Nueva Contraseña *</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-dark border-secondary text-secondary"><i class="bi bi-lock"></i></span>
-                                <input type="password" class="form-control" name="password_nueva" required minlength="6" placeholder="Mínimo 6 caracteres">
+                            <div class="position-relative">
+                                <input type="password" class="form-control pe-5" name="password_nueva" required minlength="6" placeholder="Mínimo 6 caracteres">
+                                <span class="position-absolute top-50 end-0 translate-middle-y me-3 toggle-password" style="cursor: pointer; color: #6c757d; z-index: 10;">
+                                    <i class="bi bi-eye-fill"></i>
+                                </span>
+                            </div>
                             </div>
                         </div>
 
@@ -116,7 +123,12 @@ require_once __DIR__ . '/../../layouts/header.php';
                             <label class="form-label text-light small">Confirmar Nueva Contraseña *</label>
                             <div class="input-group">
                                 <span class="input-group-text bg-dark border-secondary text-secondary"><i class="bi bi-check2-circle"></i></span>
-                                <input type="password" class="form-control" name="password_confirmar" required minlength="6" placeholder="Repite la nueva contraseña">
+                            <div class="position-relative">
+                                <input type="password" class="form-control pe-5" name="password_confirmar" required minlength="6" placeholder="Repite la nueva contraseña">
+                                <span class="position-absolute top-50 end-0 translate-middle-y me-3 toggle-password" style="cursor: pointer; color: #6c757d; z-index: 10;">
+                                    <i class="bi bi-eye-fill"></i>
+                                </span>
+                            </div>
                             </div>
                         </div>
 

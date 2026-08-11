@@ -1,12 +1,7 @@
-Options -MultiViews
 RewriteEngine On
+RewriteBase /
 
-# Evitar listar directorios
-Options -Indexes
-
-# Si el archivo o directorio existe físicamente (CSS, JS, imágenes, portadas), servirlo directamente
+# Si no es un archivo ni carpeta real, manda la petición a index.php
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-
-# Si no existe, redirigir al Front Controller index.php pasando la ruta como parámetro 'url'
-RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+RewriteRule ^(.*)$ index.php [QSA,L]

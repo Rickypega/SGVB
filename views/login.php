@@ -26,9 +26,14 @@ require_once __DIR__ . '/../layouts/header.php';
                     <div class="mb-4">
                         <div class="d-flex justify-content-between">
                             <label for="password" class="form-label"><i class="bi bi-key me-1"></i> Contraseña</label>
-                            <span class="small text-muted">Mín. 6 caracteres</span>
+                            <a href="<?= BASE_URL ?>usuario/recuperar_password" class="text-primary text-decoration-none small fw-bold">¿Olvidaste tu contraseña?</a>
                         </div>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="••••••••" required>
+                        <div class="position-relative">
+                            <input type="password" class="form-control pe-5" id="password" name="password" placeholder="••••••••" required>
+                            <span class="position-absolute top-50 end-0 translate-middle-y me-3 toggle-password" style="cursor: pointer; color: #6c757d; z-index: 10;">
+                                <i class="bi bi-eye-fill"></i>
+                            </span>
+                        </div>
                     </div>
 
                     <div class="d-grid gap-2">

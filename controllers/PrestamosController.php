@@ -195,27 +195,6 @@ class PrestamosController {
     /**
      * Endpoint de demostración para recargar la Billetera Virtual del Lector
      */
-    public function recargar(): void {
-        $usuario = $this->requerirAutenticacion();
-        $monto = (float)($_POST['monto'] ?? 0.00);
-
-        if ($monto < 5.00 || $monto > 500.00) {
-            $_SESSION['error'] = 'El monto de recarga debe estar entre 5.00 y 500.00 Créditos ⛃ por transacción de prueba.';
-            header('Location: ' . BASE_URL . 'estandar/panel');
-            exit;
-        }
-
-        $usuarioActual = Usuario::porId($usuario->id);
-        if ($usuarioActual && $usuarioActual->recargarSaldo($monto)) {
-            $_SESSION['usuario'] = $usuarioActual;
-            $_SESSION['exito'] = '¡Billetera recargada con éxito! Has añadido ' . number_format($monto, 2) . ' Créditos ⛃ a tu saldo virtual.';
-        } else {
-            $_SESSION['error'] = 'No se pudo procesar la recarga de tu billetera.';
-        }
-
-        header('Location: ' . BASE_URL . 'estandar/panel');
-        exit;
-    }
 
     /**
      * Añade un recurso digital o literario a la sesión del carrito de préstamos (Tarea 8)
@@ -270,7 +249,7 @@ class PrestamosController {
         $prestamosActivos = Prestamo::obtenerPorUsuario($usuario->id);
         foreach ($prestamosActivos as $pAct) {
             if ($pAct->recurso_id === $recursoId && $pAct->estado === 'activo') {
-                $msg = 'Ya rentaste o posees una renta activa de "' . $recurso->titulo . '". No puedes volver a añadirlo al carrito ni rentarlo de nuevo; debes extender su tiempo de préstamo en tu librería o panel.';
+                $msg = 'Ya tienes este libro alquilado actualmente';
                 if ($isAjax) {
                     header('Content-Type: application/json');
                     echo json_encode(['exito' => false, 'mensaje' => $msg]);

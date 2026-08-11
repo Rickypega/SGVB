@@ -47,7 +47,7 @@ require_once __DIR__ . '/../../layouts/header.php';
                 </div>
 
                 <!-- Botones rápidos de recarga para demostración -->
-                <form action="<?= BASE_URL ?>estandar/recargar" method="POST">
+                <form action="<?= BASE_URL ?>billetera/procesar-pago" method="POST">
                     <label class="form-label small text-secondary mb-2"><i class="bi bi-plus-circle me-1"></i> Recarga Rápida (Demo):</label>
                     <div class="row g-2 mb-3">
                         <div class="col-4">
@@ -59,6 +59,9 @@ require_once __DIR__ . '/../../layouts/header.php';
                         <div class="col-4">
                             <button type="submit" name="monto" value="50.00" class="btn btn-gradient-secondary w-100 py-2 small fw-bold">+ 50 ⛃</button>
                         </div>
+                    </div>
+                    <div class="mt-2 text-end">
+                        <a href="<?= BASE_URL ?>billetera" class="text-info text-decoration-none small fw-semibold">Abrir Billetera Completa <i class="bi bi-arrow-right"></i></a>
                     </div>
                 </form>
                 <div class="text-center small text-muted">

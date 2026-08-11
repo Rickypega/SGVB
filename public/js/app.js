@@ -71,7 +71,7 @@ function openBookDetailModal(id, titulo, autor, isbn, categoriaNombre, anio, tip
     if (descEl) {
         descEl.textContent = descripcion && descripcion.trim() !== '' ? descripcion : 'Este recurso literario no posee una descripción detallada en este momento. Puedes consultar el ISBN o autor para mayores referencias de su contenido.';
     }
-    if (priceEl) priceEl.textContent = `${parseFloat(precio || 0).toFixed(2)} ⛃`;
+    if (priceEl) priceEl.textContent = `${parseFloat(precio || 0).toFixed(2)} 🪙`;
 
     // Manejo de imagen de portada en modal
     if (coverImg && coverIcon) {
@@ -125,7 +125,7 @@ function openConfirmModal(id, titulo, precio) {
     if (!titleEl || !inputIdEl) return;
 
     titleEl.textContent = titulo;
-    if (priceEl) priceEl.textContent = `${parseFloat(precio || 0).toFixed(2)} Créditos ⛃`;
+    if (priceEl) priceEl.textContent = `${parseFloat(precio || 0).toFixed(2)} Créditos 🪙`;
     inputIdEl.value = id;
 
     const modalEl = document.getElementById('confirmRentarModal');
@@ -157,22 +157,31 @@ function addToCart(id, titulo) {
  * Tarea 12: Suscripción para notificación cuando un producto agotado vuelva a estar disponible
  */
 function subscribeToResource(id, titulo) {
-    if (!confirm(`¿Deseas suscribirte para recibir un aviso en cuanto el recurso "${titulo}" tenga unidades disponibles en inventario?`)) {
-        return;
-    }
+    Swal.fire({
+        title: '¿Suscribirse?',
+        text: `¿Deseas suscribirte para recibir un aviso en cuanto el recurso "${titulo}" tenga unidades disponibles en inventario?`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#0d6efd',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Sí, suscribirme',
+        cancelButtonText: 'Cancelar'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = `${BASE_URL}estandar/suscribir`;
 
-    const form = document.createElement('form');
-    form.method = 'POST';
-    form.action = `${BASE_URL}estandar/suscribir`;
+            const inputId = document.createElement('input');
+            inputId.type = 'hidden';
+            inputId.name = 'recurso_id';
+            inputId.value = id;
 
-    const inputId = document.createElement('input');
-    inputId.type = 'hidden';
-    inputId.name = 'recurso_id';
-    inputId.value = id;
-
-    form.appendChild(inputId);
-    document.body.appendChild(form);
-    form.submit();
+            form.appendChild(inputId);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    });
 }
 
 /**
@@ -193,7 +202,7 @@ function openBookModalById(id) {
                 const r = data.recurso;
                 openBookDetailModal(r.id, r.titulo, r.autor, r.isbn, r.categoria_nombre, r.anio_publicacion, r.tipo, r.disponibilidad, r.precio_renta, r.descripcion, r.portada);
             } else {
-                alert('No se pudieron cargar los detalles del recurso.');
+                Swal.fire('Error', 'No se pudieron cargar los detalles del recurso.', 'error');
             }
         })
         .catch(e => console.error('Error abriendo modal por ID:', e));
@@ -284,10 +293,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentTheme = localStorage.getItem('theme') || 'dark';
         if (currentTheme === 'light') {
             document.documentElement.setAttribute('data-theme', 'light');
-            themeToggleBtn.textContent = '☼';
+            themeToggleBtn.innerHTML = '<i class="bi bi-moon-stars-fill"></i>';
         } else {
             document.documentElement.removeAttribute('data-theme');
-            themeToggleBtn.textContent = '☽';
+            themeToggleBtn.innerHTML = '<i class="bi bi-sun-fill"></i>';
         }
 
         themeToggleBtn.addEventListener('click', () => {
@@ -295,12 +304,73 @@ document.addEventListener('DOMContentLoaded', () => {
             if (isLight) {
                 document.documentElement.removeAttribute('data-theme');
                 localStorage.setItem('theme', 'dark');
-                themeToggleBtn.textContent = '☽';
+                themeToggleBtn.innerHTML = '<i class="bi bi-sun-fill"></i>';
             } else {
                 document.documentElement.setAttribute('data-theme', 'light');
                 localStorage.setItem('theme', 'light');
-                themeToggleBtn.textContent = '☼';
+                themeToggleBtn.innerHTML = '<i class="bi bi-moon-stars-fill"></i>';
             }
         });
     }
+});
+
+// Interceptor Global para reemplazar confirm() nativo por SweetAlert2
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('[onclick*="confirm("], [onsubmit*="confirm("]').forEach(el => {
+        let attr = el.hasAttribute('onclick') ? 'onclick' : 'onsubmit';
+        let originalValue = el.getAttribute(attr);
+        let match = originalValue.match(/confirm\(['"](.+)['"]\)/);
+        let msg = match ? match[1] : '¿Estás seguro de realizar esta acción?';
+        
+        el.removeAttribute(attr);
+        
+        el.addEventListener(attr === 'onclick' ? 'click' : 'submit', function(e) {
+            e.preventDefault();
+            Swal.fire({
+                title: '¿Confirmar Acción?',
+                text: msg,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#0d6efd',
+                cancelButtonColor: '#6c757d',
+                confirmButtonText: 'Sí, confirmar',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    if (el.tagName === 'FORM') {
+                        el.submit();
+                    } else if (el.closest('form')) {
+                        el.closest('form').submit();
+                    } else if (el.tagName === 'A') {
+                        window.location.href = el.href;
+                    }
+                }
+            });
+        });
+    });
+});
+
+// Tarea: Funcionalidad de Mostrar/Ocultar Contraseña
+document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.toggle-password').forEach(function(toggle) {
+        toggle.addEventListener('click', function(e) {
+            // Evitar validaciones u otros comportamientos
+            e.preventDefault();
+            
+            // Encontrar el input hermano (el input es el hermano anterior o dentro del mismo contenedor)
+            const container = this.closest('.position-relative');
+            const input = container.querySelector('input');
+            const icon = this.querySelector('i');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('bi-eye-fill');
+                icon.classList.add('bi-eye-slash-fill');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('bi-eye-slash-fill');
+                icon.classList.add('bi-eye-fill');
+            }
+        });
+    });
 });

@@ -55,7 +55,7 @@ if (is_array($flujoArray)) {
                     <i class="bi bi-currency-dollar"></i>
                 </div>
                 <div class="text-muted small">Ganancias Acumuladas</div>
-                <h3 class="fw-bold text-gradient-accent mb-1"><?= number_format((float)($gananciasTotales ?? 0), 2) ?> <span class="fs-6 text-secondary fw-normal">Créditos ⛃</span></h3>
+                <h3 class="fw-bold text-gradient-accent mb-1">$<?= number_format((float)($gananciasTotales ?? 0), 2) ?> <span class="fs-6 text-secondary fw-normal">USD</span></h3>
                 <div class="text-success small"><i class="bi bi-graph-up-arrow me-1"></i> Rentas procesadas y cobradas</div>
             </div>
         </div>

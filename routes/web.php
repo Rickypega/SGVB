@@ -125,8 +125,10 @@ $router->post('estandar/rentar', 'PrestamosController@rentar');
 $router->get('estandar/rentar', 'PrestamosController@rentar');
 $router->post('estandar/devolver', 'PrestamosController@devolver');
 $router->get('estandar/devolver', 'PrestamosController@devolver');
-$router->post('estandar/recargar', 'PrestamosController@recargar');
 $router->post('estandar/carrito/agregar', 'PrestamosController@agregarCarrito');
+$router->get('billetera', 'PagoController@index');
+$router->post('billetera/procesar-pago', 'PagoController@checkout');
+$router->get('pago/success', 'PagoController@success');
 $router->post('estandar/carrito/eliminar', 'PrestamosController@eliminarCarrito');
 $router->post('estandar/carrito/procesar', 'PrestamosController@procesarCarrito');
 $router->post('estandar/suscribir', 'PrestamosController@suscribir');
@@ -138,6 +140,11 @@ $router->get('mi_libreria', 'PrestamosController@miLibreria');
 $router->get('api/recurso', 'RecursosController@detalleJson');
 
 // Rutas Configuración de Usuario (Tarea 12)
+$router->get('usuario/activar', 'AuthController@activarCuenta');
+$router->get('usuario/recuperar_password', 'AuthController@recuperarPassword');
+$router->post('usuario/recuperar_password', 'AuthController@recuperarPassword');
+$router->get('usuario/restablecer_password', 'AuthController@restablecerPassword');
+$router->post('usuario/restablecer_password', 'AuthController@restablecerPassword');
 $router->get('usuario/configuracion', 'UsuarioController@configuracion');
 $router->post('usuario/actualizar', 'UsuarioController@actualizarDatos');
 $router->post('usuario/password', 'UsuarioController@cambiarPassword');

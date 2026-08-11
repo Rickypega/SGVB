@@ -20,6 +20,9 @@ class Usuario {
     public bool $correo_verificado;
     public float $saldo;
     public string $fecha_registro;
+    public ?string $token_verificacion;
+    public ?string $token_recuperacion;
+    public ?string $expiracion_token;
 
     public function __construct(
         int $id = 0,
@@ -32,7 +35,10 @@ class Usuario {
         bool $cedula_verificada = false,
         bool $correo_verificado = false,
         float $saldo = 0.00,
-        string $fecha_registro = ''
+        string $fecha_registro = '',
+        ?string $token_verificacion = null,
+        ?string $token_recuperacion = null,
+        ?string $expiracion_token = null
     ) {
         $this->id = $id;
         $this->nombre = $nombre;
@@ -45,6 +51,9 @@ class Usuario {
         $this->correo_verificado = $correo_verificado;
         $this->saldo = $saldo;
         $this->fecha_registro = $fecha_registro;
+        $this->token_verificacion = $token_verificacion;
+        $this->token_recuperacion = $token_recuperacion;
+        $this->expiracion_token = $expiracion_token;
     }
 
     /**
@@ -212,19 +221,20 @@ class Usuario {
         string $passwordTextoPlano,
         string $cedula,
         string $fechaNacimiento,
-        int $rolId = 2
+        int $rolId = 2,
+        string $tokenVerificacion = ''
     ): ?Usuario {
         $pdo = Database::getConnection();
         
         $hashPassword = password_hash($passwordTextoPlano, PASSWORD_DEFAULT);
         $cedulaHash = hash('sha256', $cedula);
-        // Al registrar, el lector inicia con cédula verificada en 1 para facilitar demos instantáneas
+        // Al registrar, correo_verificado es 0 hasta que el usuario lo active
         $cedulaVerificada = 1;
-        $correoVerificado = 1;
+        $correoVerificado = 0;
         $saldoInicial = 30.00; // Bono inicial de billetera virtual para nuevas cuentas
 
-        $sql = "INSERT INTO usuarios (nombre, correo, password, cedula, fecha_nacimiento, rol_id, cedula_verificada, correo_verificado, saldo, fecha_registro) 
-                VALUES (:nombre, :correo, :password, :cedula, :fecha_nacimiento, :rol_id, :cedula_verificada, :correo_verificado, :saldo, NOW())";
+        $sql = "INSERT INTO usuarios (nombre, correo, password, cedula, fecha_nacimiento, rol_id, cedula_verificada, correo_verificado, token_verificacion, saldo, fecha_registro) 
+                VALUES (:nombre, :correo, :password, :cedula, :fecha_nacimiento, :rol_id, :cedula_verificada, :correo_verificado, :token_verificacion, :saldo, NOW())";
         
         try {
             $stmt = $pdo->prepare($sql);
@@ -237,6 +247,7 @@ class Usuario {
                 'rol_id' => $rolId,
                 'cedula_verificada' => $cedulaVerificada,
                 'correo_verificado' => $correoVerificado,
+                'token_verificacion' => $tokenVerificacion ?: null,
                 'saldo' => $saldoInicial
             ]);
 
@@ -296,8 +307,23 @@ class Usuario {
             ((int)$row['cedula_verificada']) === 1,
             ((int)$row['correo_verificado']) === 1,
             (float)$row['saldo'],
-            $row['fecha_registro'] ?? ''
+            $row['fecha_registro'] ?? '',
+            $row['token_verificacion'] ?? null,
+            $row['token_recuperacion'] ?? null,
+            $row['expiracion_token'] ?? null
         );
+    }
+    
+    public static function eliminar(int $id): bool {
+        $pdo = Database::getConnection();
+        try {
+            $stmt = $pdo->prepare("DELETE FROM usuarios WHERE id = :id");
+            $stmt->execute(['id' => $id]);
+            return true;
+        } catch (PDOException $e) {
+            error_log("Error eliminando usuario: " . $e->getMessage());
+            return false;
+        }
     }
 
     /**

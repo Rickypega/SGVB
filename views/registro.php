@@ -41,11 +41,11 @@ require_once __DIR__ . '/../layouts/header.php';
 
                     <div class="mb-4">
                         <label for="password" class="form-label"><i class="bi bi-shield-lock me-1"></i> Contraseña de Acceso</label>
-                        <div class="input-group">
-                            <input type="password" class="form-control" id="password" name="password" placeholder="Mínimo 6 caracteres" required minlength="6">
-                            <button class="btn btn-outline-secondary" type="button" id="togglePassword">
-                                <i class="bi bi-eye"></i>
-                            </button>
+                        <div class="position-relative">
+                            <input type="password" class="form-control pe-5" id="password" name="password" placeholder="Mínimo 6 caracteres" required minlength="6">
+                            <span class="position-absolute top-50 end-0 translate-middle-y me-3 toggle-password" style="cursor: pointer; color: #6c757d; z-index: 10;">
+                                <i class="bi bi-eye-fill"></i>
+                            </span>
                         </div>
                     </div>
 
