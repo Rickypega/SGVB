@@ -1,7 +1,6 @@
-RewriteEngine On
-RewriteBase /
+DirectoryIndex index.php
 
-# Si no es un archivo ni carpeta real, manda la petición a index.php
+RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php [QSA,L]

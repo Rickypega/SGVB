@@ -32,9 +32,10 @@ $url = $_GET['url'] ?? '';
 // Si url está vacía e intentamos deducir desde REQUEST_URI (útil en pruebas directas)
 if (empty($url) && isset($_SERVER['REQUEST_URI'])) {
     $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH) ?? '';
-    // Remover prefijo de BASE_URL si existe
-    if (BASE_URL !== '/' && str_starts_with($path, BASE_URL)) {
-        $path = substr($path, strlen(BASE_URL));
+    $basePath = parse_url(BASE_URL, PHP_URL_PATH) ?? '/';
+    // Remover prefijo del path base si existe
+    if ($basePath !== '/' && str_starts_with($path, $basePath)) {
+        $path = substr($path, strlen($basePath));
     }
     $url = trim($path, '/');
     if ($url === 'index.php') {
