@@ -33,13 +33,16 @@ class MailService {
             }
             $mail->Port       = $config['port'];
             
-            $mail->setFrom($config['from_email'], $config['from_name']);
-            $mail->CharSet = 'UTF-8';
+            $mail->setFrom($config['username'], $config['from_name']); // Forzar a username SMTP para evitar spam
+            $mail->addReplyTo($config['username'], $config['from_name'] . ' Soporte');
+            $mail->XMailer    = 'SGBV Mailer v1.0';
+            $mail->CharSet    = 'UTF-8';
+            $mail->isHTML(true);
             
             return $mail;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             error_log("Error inicializando PHPMailer: " . $mail->ErrorInfo);
-            return $mail;
+            throw new \Exception("Error inicializando el enviador de correo.");
         }
     }
 
@@ -52,9 +55,8 @@ class MailService {
         try {
             $mail->addAddress($destinatario, $nombre);
             
-            $enlaceActivacion = BASE_URL . "usuario/activar?token=" . $token;
+            $enlaceActivacion = BASE_URL . "verificar?token=" . urlencode($token);
             
-            $mail->isHTML(true);
             $mail->Subject = 'Activa tu cuenta en SGBV';
             
             // Plantilla HTML
@@ -75,9 +77,9 @@ class MailService {
             
             $mail->send();
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             error_log("No se pudo enviar el correo de activación: " . $mail->ErrorInfo);
-            return false;
+            throw new \Exception("Error SMTP: " . $mail->ErrorInfo);
         }
     }
     
@@ -90,33 +92,69 @@ class MailService {
         try {
             $mail->addAddress($destinatario, $nombre);
             
-            $enlaceRecuperacion = BASE_URL . "usuario/restablecer_password?token=" . $token;
+            $enlaceRecuperacion = BASE_URL . "restablecer-password?token=" . urlencode($token);
             
-            $mail->isHTML(true);
             $mail->Subject = 'Recuperación de contraseña en SGBV';
             
             $cuerpoHTML = "
             <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;'>
                 <h2 style='color: #dc3545;'>Restablecer Contraseña</h2>
-                <p>Hola $nombre,</p>
-                <p>Hemos recibido una solicitud para restablecer la contraseña de tu cuenta en SGBV. Si fuiste tú, haz clic en el siguiente botón:</p>
+                <p>Hola $nombre, hemos recibido una solicitud para restablecer la contraseña de tu cuenta en SGBV.</p>
+                <p>Si no fuiste tú, puedes ignorar este correo sin problemas.</p>
                 <div style='text-align: center; margin: 30px 0;'>
-                    <a href='$enlaceRecuperacion' style='background-color: #dc3545; color: #fff; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold;'>Crear Nueva Contraseña</a>
+                    <a href='$enlaceRecuperacion' style='background-color: #dc3545; color: #fff; padding: 12px 25px; text-decoration: none; border-radius: 5px; font-weight: bold;'>Restablecer Contraseña</a>
                 </div>
-                <p style='color: #666; font-size: 12px;'>Este enlace expirará en 1 hora por motivos de seguridad.</p>
                 <p style='color: #666; font-size: 12px;'>Si el botón no funciona, copia y pega este enlace en tu navegador:<br>$enlaceRecuperacion</p>
                 <hr style='border: none; border-top: 1px solid #eee; margin-top: 30px;'>
-                <p style='color: #999; font-size: 11px; text-align: center;'>Si no solicitaste este cambio, puedes ignorar este correo de forma segura.</p>
+                <p style='color: #999; font-size: 11px; text-align: center;'>Este es un correo automático, por favor no respondas.</p>
             </div>";
             
             $mail->Body = $cuerpoHTML;
-            $mail->AltBody = "Hola $nombre, para restablecer tu contraseña visita: $enlaceRecuperacion (expira en 1 hora).";
+            $mail->AltBody = "Hola $nombre, para restablecer tu contraseña copia el siguiente enlace: $enlaceRecuperacion";
             
             $mail->send();
             return true;
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             error_log("No se pudo enviar el correo de recuperación: " . $mail->ErrorInfo);
-            return false;
+            throw new \Exception("Error SMTP: " . $mail->ErrorInfo);
+        }
+    }
+
+    /**
+     * Envía un correo desde el formulario de contacto (Mesa de Ayuda)
+     */
+    public static function enviarCorreoContacto(string $remitenteNombre, string $remitenteCorreo, string $asunto, string $mensaje): bool {
+        $mail = self::getMailer();
+        
+        try {
+            $config = require __DIR__ . '/../config/mail.php';
+            // El destinatario es el correo de soporte
+            $mail->addAddress('rpgtmsoporte@gmail.com', 'Soporte SGBV');
+            
+            // Responder a quien envió el formulario
+            $mail->addReplyTo($remitenteCorreo, $remitenteNombre);
+            
+            $mail->Subject = 'Nuevo Mensaje de Mesa de Ayuda: ' . $asunto;
+            
+            $cuerpoHTML = "
+            <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;'>
+                <h2 style='color: #0d6efd;'>Nuevo Mensaje de Contacto</h2>
+                <p><strong>Remitente:</strong> $remitenteNombre ($remitenteCorreo)</p>
+                <p><strong>Asunto:</strong> $asunto</p>
+                <hr style='border: none; border-top: 1px solid #eee; margin: 20px 0;'>
+                <p style='white-space: pre-wrap;'>$mensaje</p>
+                <hr style='border: none; border-top: 1px solid #eee; margin-top: 30px;'>
+                <p style='color: #999; font-size: 11px; text-align: center;'>Generado desde el formulario de contacto SGBV.</p>
+            </div>";
+            
+            $mail->Body = $cuerpoHTML;
+            $mail->AltBody = "Nuevo mensaje de contacto\nRemitente: $remitenteNombre ($remitenteCorreo)\nAsunto: $asunto\n\nMensaje:\n$mensaje";
+            
+            $mail->send();
+            return true;
+        } catch (\Exception $e) {
+            error_log("No se pudo enviar el correo de contacto: " . $mail->ErrorInfo);
+            throw new \Exception("Error SMTP: " . $mail->ErrorInfo);
         }
     }
 }

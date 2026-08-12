@@ -116,4 +116,33 @@ class UsuarioController {
         }
         return $_SESSION['usuario'];
     }
+    /**
+     * Activa la cuenta del usuario verificando el token
+     */
+    public function verificarCorreo(): void {
+        $token = $_GET['token'] ?? '';
+        if (empty($token)) {
+            $_SESSION['error'] = 'Enlace de activación inválido o faltante.';
+            header('Location: ' . BASE_URL . 'login');
+            exit;
+        }
+
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare("SELECT id FROM usuarios WHERE token_verificacion = :token AND correo_verificado = 0 LIMIT 1");
+        $stmt->execute(['token' => $token]);
+        $row = $stmt->fetch();
+
+        if ($row) {
+            $stmtUpdate = $pdo->prepare("UPDATE usuarios SET correo_verificado = 1, token_verificacion = NULL WHERE id = :id");
+            $stmtUpdate->execute(['id' => $row['id']]);
+            
+            $_SESSION['exito'] = '¡Tu cuenta ha sido activada con éxito! Ya puedes iniciar sesión.';
+            header('Location: ' . BASE_URL . 'login?verificado=1');
+            exit;
+        } else {
+            $_SESSION['error'] = 'El enlace de activación no es válido o la cuenta ya ha sido activada.';
+            header('Location: ' . BASE_URL . 'login');
+            exit;
+        }
+    }
 }

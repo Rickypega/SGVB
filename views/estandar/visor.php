@@ -78,9 +78,12 @@ if (!empty($recurso->archivo_pdf)) {
             </div>
 
             <!-- Controles TTS -->
-            <div class="d-flex align-items-center gap-1 bg-dark p-1 rounded-pill border border-secondary">
+            <div class="d-flex align-items-center gap-2 bg-dark p-1 rounded-pill border border-secondary px-2">
+                <select id="voiceSelect" class="form-select form-select-sm bg-dark text-light border-secondary rounded-pill" style="max-width: 180px; font-size: 0.8rem;">
+                    <option value="">Cargando voces...</option>
+                </select>
                 <button type="button" id="btnSpeak" class="btn btn-sm btn-gradient-primary rounded-pill px-3" onclick="toggleSpeech()">
-                    <i class="bi bi-volume-up-fill" id="speakIcon"></i> <span id="speakText">Leer Página</span>
+                    <i class="bi bi-volume-up-fill" id="speakIcon"></i> <span id="speakText">Leer</span>
                 </button>
                 <button type="button" id="btnStopSpeak" class="btn btn-sm btn-outline-danger rounded-circle p-1 d-none" style="width: 30px; height: 30px;" onclick="stopSpeech()">
                     <i class="bi bi-stop-fill"></i>
@@ -203,10 +206,55 @@ if (pdfUrl) {
     });
 }
 
-// 3. TTS
+// 3. TTS (Texto a Voz) mejorado
 let synth = window.speechSynthesis;
 let utterance = null;
 let isSpeaking = false;
+let availableVoices = [];
+
+function populateVoiceList() {
+    // Filtrar voces en español (es-ES, es-MX, es-US, etc.)
+    availableVoices = synth.getVoices().filter(v => v.lang.startsWith('es'));
+    const voiceSelect = document.getElementById('voiceSelect');
+    const previousSelection = voiceSelect.value; // Guardar selección previa
+    
+    voiceSelect.innerHTML = '';
+    
+    if(availableVoices.length === 0) {
+        voiceSelect.innerHTML = '<option value="">Voz por defecto</option>';
+        return;
+    }
+
+    availableVoices.forEach((voice, index) => {
+        let option = document.createElement('option');
+        
+        // Identificar género por nombres comunes de voces de Windows/Google
+        let genero = '';
+        let nameLower = voice.name.toLowerCase();
+        if (nameLower.includes('sabina') || nameLower.includes('helena') || nameLower.includes('laura') || nameLower.includes('mia') || nameLower.includes('paulina')) {
+            genero = ' (Femenina)';
+        } else if (nameLower.includes('pablo') || nameLower.includes('raul') || nameLower.includes('tomas') || nameLower.includes('jorge') || nameLower.includes('diego')) {
+            genero = ' (Masculina)';
+        } else if (nameLower.includes('google')) {
+            genero = ' (Natural)';
+        }
+        
+        option.textContent = voice.name.replace('Microsoft ', '').replace('Desktop', '') + genero;
+        option.value = index;
+        voiceSelect.appendChild(option);
+    });
+    
+    // Restaurar la selección previa si sigue existiendo
+    if (previousSelection !== "") {
+        voiceSelect.value = previousSelection;
+    }
+}
+
+// Inicializar voces
+populateVoiceList();
+if (speechSynthesis.onvoiceschanged !== undefined) {
+    speechSynthesis.onvoiceschanged = populateVoiceList;
+}
 
 function toggleSpeech() {
     if (!synth) return;
@@ -222,10 +270,21 @@ function toggleSpeech() {
     utterance = new SpeechSynthesisUtterance(textToRead);
     utterance.lang = 'es-ES';
     
+    // Configuración para una voz más humana y pausada
+    utterance.rate = 0.9; // Velocidad de lectura cómoda
+    utterance.pitch = 1.0;
+    
+    // Asignar voz seleccionada por el usuario
+    const voiceSelect = document.getElementById('voiceSelect');
+    if (availableVoices.length > 0 && voiceSelect.value !== "") {
+        utterance.voice = availableVoices[voiceSelect.value];
+    }
+    
     utterance.onstart = () => {
         isSpeaking = true;
         document.getElementById('speakIcon').className = 'bi bi-stop-fill';
-        document.getElementById('speakText').innerText = 'Detener Lectura';
+        document.getElementById('speakText').innerText = 'Detener';
+        document.getElementById('btnStopSpeak').classList.remove('d-none');
     };
     utterance.onend = () => stopSpeech();
     

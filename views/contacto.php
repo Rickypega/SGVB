@@ -23,7 +23,7 @@ require_once __DIR__ . '/../layouts/header.php';
                                 </div>
                                 <div>
                                     <div class="small text-secondary">Correo de Atención e Incidencias</div>
-                                    <div class="fw-bold text-light">soporte@sgbv-virtual.com</div>
+                                    <div class="fw-bold">rpgtmsoporte@gmail.com</div>
                                 </div>
                             </div>
 
@@ -33,7 +33,7 @@ require_once __DIR__ . '/../layouts/header.php';
                                 </div>
                                 <div>
                                     <div class="small text-secondary">Oficina de Coordinación Digital</div>
-                                    <div class="fw-bold text-light">Campus Central Bibliotecario SGBV</div>
+                                    <div class="fw-bold">Campus Central Bibliotecario SGBV</div>
                                 </div>
                             </div>
 
@@ -43,7 +43,7 @@ require_once __DIR__ . '/../layouts/header.php';
                                 </div>
                                 <div>
                                     <div class="small text-secondary">Horario de Respuesta en Línea</div>
-                                    <div class="fw-bold text-light">Lunes a Domingo (Ininterrumpido)</div>
+                                    <div class="fw-bold">Lunes a Domingo (Ininterrumpido)</div>
                                 </div>
                             </div>
                         </div>
@@ -54,38 +54,38 @@ require_once __DIR__ . '/../layouts/header.php';
                     </div>
                 </div>
 
-                <!-- Formulario de Contacto (Tarea 13) -->
+                <!-- Formulario de Contacto -->
                 <div class="col-md-7">
                     <div class="glass-card p-4 p-md-5 h-100 border-secondary shadow-lg">
-                        <h4 class="fw-bold text-light mb-1"><i class="bi bi-send-fill text-primary me-2"></i> Enviar Mensaje a Mesa de Ayuda</h4>
+                        <h4 class="fw-bold mb-1"><i class="bi bi-send-fill text-primary me-2"></i> Enviar Mensaje a Mesa de Ayuda</h4>
                         <p class="text-secondary small mb-4">Completa el formulario y nuestro equipo técnico te responderá al correo electrónico en minutos.</p>
 
                         <form action="<?= BASE_URL ?>contacto/procesar" method="POST">
                             <div class="row g-3">
                                 <div class="col-md-6">
-                                    <label class="form-label text-light small">Nombre Completo *</label>
+                                    <label class="form-label fw-semibold small">Nombre Completo *</label>
                                     <input type="text" class="form-control" name="nombre" value="<?= htmlspecialchars($usuarioActual->nombre ?? '') ?>" required placeholder="Tu nombre y apellido">
                                 </div>
                                 <div class="col-md-6">
-                                    <label class="form-label text-light small">Correo Electrónico *</label>
+                                    <label class="form-label fw-semibold small">Correo Electrónico *</label>
                                     <input type="email" class="form-control" name="correo" value="<?= htmlspecialchars($usuarioActual->correo ?? '') ?>" required placeholder="ejemplo@correo.com">
                                 </div>
                                 <div class="col-12">
-                                    <label class="form-label text-light small">Asunto de tu Consulta *</label>
-                                    <select class="form-select bg-dark text-light border-secondary" name="asunto" required>
-                                        <option value="Soporte Técnico Visor / Lectura">Soporte Técnico Visor / Lectura Text-to-Speech</option>
+                                    <label class="form-label fw-semibold small">Asunto de tu Consulta *</label>
+                                    <select class="form-select border-secondary" name="asunto" required>
+                                        <option value="Soporte Técnico Visor / Lectura">Soporte Técnico Visor / Lectura</option>
                                         <option value="Duda sobre Renta o Devolución">Consulta sobre Renta, Plazo 14d o Devolución</option>
-                                        <option value="Problemas con Recarga o Créditos">Problemas con Billetera o Créditos SGBV (⛃)</option>
+                                        <option value="Problemas con Recarga o Créditos">Problemas con Billetera o Créditos SGBV</option>
                                         <option value="Sugerencia de Libro o Audiolibro">Sugerencia de Nuevo Material para el Catálogo</option>
                                         <option value="Otro Asunto">Otro Asunto Administrativo o General</option>
                                     </select>
                                 </div>
                                 <div class="col-12">
-                                    <label class="form-label text-light small">Mensaje o Detalle *</label>
+                                    <label class="form-label fw-semibold small">Mensaje o Detalle *</label>
                                     <textarea class="form-control" name="mensaje" rows="5" required placeholder="Describe detalladamente tu consulta, duda o reporte aquí..."></textarea>
                                 </div>
                                 <div class="col-12 mt-4">
-                                    <button type="submit" class="btn btn-gradient-primary w-100 py-3 fw-bold d-flex align-items-center justify-content-center gap-2">
+                                    <button type="submit" class="btn btn-primary w-100 py-3 fw-bold d-flex align-items-center justify-content-center gap-2">
                                         <i class="bi bi-send"></i> Enviar Consulta a SGBV
                                     </button>
                                 </div>

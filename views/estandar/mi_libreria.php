@@ -211,7 +211,7 @@ if (!empty($misLibros)) {
                          data-categoria="<?= htmlspecialchars(strtolower($l['categoria_nombre'] ?? '')) ?>"
                          data-estado="<?= $l['estado'] ?>">
                         <div class="book-card glass-card h-100 d-flex flex-column border border-secondary shadow-sm" style="opacity: 0.85;">
-                            <div class="book-cover-container position-relative overflow-hidden d-flex align-items-center justify-content-center">
+                            <div class="book-cover-container position-relative overflow-hidden d-flex align-items-center justify-content-center" style="cursor: pointer;" onclick="openBookModalById(<?= $l['recurso_id'] ?>)">
                                 <span class="book-badge-type <?= $colorTipo ?>"><i class="bi <?= $iconoTipo ?> me-1"></i> <?= htmlspecialchars($l['recurso_tipo'] ?? 'libro') ?></span>
                                 <span class="badge bg-secondary text-white px-2 py-1 shadow-sm" style="position: absolute; top: 12px; right: 12px; z-index: 2;">
                                     <i class="bi bi-check2-all me-1"></i> Finalizado
@@ -223,11 +223,11 @@ if (!empty($misLibros)) {
                                 <?php endif; ?>
                             </div>
                             <div class="book-card-body d-flex flex-column flex-grow-1 p-3">
-                                <h6 class="book-title fw-bold text-light mb-1"><?= htmlspecialchars($l['recurso_titulo'] ?? '') ?></h6>
+                                <h6 class="book-title fw-bold text-light mb-1 text-truncate" title="<?= htmlspecialchars($l['recurso_titulo'] ?? '') ?>"><?= htmlspecialchars($l['recurso_titulo'] ?? '') ?></h6>
                                 <p class="book-author text-secondary small mb-3"><i class="bi bi-person me-1"></i> <?= htmlspecialchars($l['recurso_autor'] ?? '') ?></p>
                                 <div class="mt-auto pt-2 border-top border-secondary">
-                                    <button class="btn btn-secondary btn-sm w-100 fw-bold py-2 d-flex align-items-center justify-content-center gap-2 shadow-sm" disabled>
-                                        <i class="bi bi-lock-fill fs-6"></i> Préstamo Finalizado
+                                    <button type="button" class="btn btn-outline-primary btn-sm w-100 fw-bold py-2 d-flex align-items-center justify-content-center gap-2 shadow-sm" onclick="openBookModalById(<?= $l['recurso_id'] ?>)">
+                                        <i class="bi bi-arrow-repeat fs-6"></i> Volver a Rentar
                                     </button>
                                 </div>
                             </div>

@@ -17,7 +17,7 @@ $token = $_GET['token'] ?? $_POST['token'] ?? '';
                     <p class="text-muted small">Crea una nueva contraseña segura para tu cuenta.</p>
                 </div>
 
-                <form action="<?= BASE_URL ?>usuario/restablecer_password" method="POST">
+                <form action="<?= BASE_URL ?>restablecer-password" method="POST">
                     <input type="hidden" name="token" value="<?= htmlspecialchars($token) ?>">
                     
                     <div class="mb-3">

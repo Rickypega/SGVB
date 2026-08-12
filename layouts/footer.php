@@ -140,7 +140,7 @@
                         <span class="text-success fw-bold fs-6" id="confirmBookPrice">0.00 Créditos ⛃</span>
                     </div>
                 </div>
-                <div class="alert alert-dark border border-secondary rounded-3 p-2 small mb-0 text-muted">
+                <div class="alert bg-transparent border border-secondary rounded-3 p-2 small mb-0 text-secondary">
                     <i class="bi bi-info-circle text-info me-1"></i> El importe será debitado directamente de tu saldo en la billetera virtual.
                 </div>
             </div>

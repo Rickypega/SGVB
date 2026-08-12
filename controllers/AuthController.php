@@ -124,75 +124,30 @@ class AuthController {
                 return;
             }
 
-            // Verificar si correo o cédula ya existen
-            $userCorreo = Usuario::porCorreo($correo);
-            if ($userCorreo !== null) {
-                if (!$userCorreo->correo_verificado) {
-                    Usuario::eliminar($userCorreo->id);
-                } else {
-                    $_SESSION['error'] = 'El correo electrónico ingresado ya se encuentra registrado.';
-                    require_once __DIR__ . '/../views/registro.php';
-                    return;
-                }
-            }
+            // Crear el usuario
+            try {
+                $tokenVerificacion = bin2hex(random_bytes(32));
+                // rol_id (2) es sobreescrito a 1 si es el primer usuario dentro de crear()
+                $nuevoUsuario = Usuario::crear($nombre, $correo, $password, $cedula, $fechaNacimiento, 2, $tokenVerificacion);
 
-            $userCedula = Usuario::porCedula($cedula);
-            if ($userCedula !== null) {
-                if (!$userCedula->correo_verificado) {
-                    Usuario::eliminar($userCedula->id);
-                } else {
-                    $_SESSION['error'] = 'El número de cédula ingresado ya se encuentra vinculado a otro usuario.';
-                    require_once __DIR__ . '/../views/registro.php';
-                    return;
-                }
-            }
-
-            // Crear el usuario lector por defecto (rol_id = 2)
-            $tokenVerificacion = bin2hex(random_bytes(32));
-            $nuevoUsuario = Usuario::crear($nombre, $correo, $password, $cedula, $fechaNacimiento, 2, $tokenVerificacion);
-
-            if ($nuevoUsuario) {
                 require_once __DIR__ . '/../libs/MailService.php';
-                MailService::enviarCorreoActivacion($correo, $nombre, $tokenVerificacion);
                 
-                $_SESSION['exito'] = '¡Cuenta creada con éxito! Por favor revisa tu correo electrónico para activarla.';
+                // Si es admin (primer usuario), ya está verificado, no enviar correo de activación
+                if ($nuevoUsuario->rol_id === 1) {
+                    $_SESSION['exito'] = '¡Cuenta de Administrador creada con éxito! Ya puedes iniciar sesión.';
+                } else {
+                    MailService::enviarCorreoActivacion($correo, $nombre, $tokenVerificacion);
+                    $_SESSION['exito'] = '¡Cuenta creada con éxito! Por favor revisa tu correo electrónico para activarla.';
+                }
+                
                 header('Location: ' . BASE_URL . 'usuario/login');
                 exit;
-            } else {
-                $_SESSION['error'] = 'Hubo un problema al registrar la cuenta. Es posible que el número de cédula ya esté vinculado a otro usuario.';
+            } catch (Exception $e) {
+                $_SESSION['error'] = $e->getMessage();
             }
         }
 
         require_once __DIR__ . '/../views/registro.php';
-    }
-
-    /**
-     * Activa la cuenta del usuario verificando el token
-     */
-    public function activarCuenta(): void {
-        $token = $_GET['token'] ?? '';
-        if (empty($token)) {
-            $_SESSION['error'] = 'Enlace de activación inválido o faltante.';
-            header('Location: ' . BASE_URL . 'usuario/login');
-            exit;
-        }
-
-        $pdo = Database::getConnection();
-        $stmt = $pdo->prepare("SELECT id FROM usuarios WHERE token_verificacion = :token AND correo_verificado = 0 LIMIT 1");
-        $stmt->execute(['token' => $token]);
-        $row = $stmt->fetch();
-
-        if ($row) {
-            $stmtUpdate = $pdo->prepare("UPDATE usuarios SET correo_verificado = 1, token_verificacion = NULL WHERE id = :id");
-            $stmtUpdate->execute(['id' => $row['id']]);
-            
-            $_SESSION['exito'] = '¡Tu cuenta ha sido activada con éxito! Ya puedes iniciar sesión.';
-        } else {
-            $_SESSION['error'] = 'El enlace de activación no es válido o la cuenta ya ha sido activada.';
-        }
-        
-        header('Location: ' . BASE_URL . 'usuario/login');
-        exit;
     }
 
     /**
@@ -215,10 +170,18 @@ class AuthController {
                     $stmt->execute(['token' => $token, 'id' => $usuario->id]);
                     
                     require_once __DIR__ . '/../libs/MailService.php';
-                    MailService::enviarCorreoRecuperacion($usuario->correo, $usuario->nombre, $token);
+                    
+                    try {
+                        MailService::enviarCorreoRecuperacion($usuario->correo, $usuario->nombre, $token);
+                        $_SESSION['exito'] = 'Si los datos coinciden con un usuario registrado, hemos enviado un enlace de recuperación a tu correo.';
+                    } catch (\Exception $e) {
+                        $_SESSION['error'] = 'No se pudo enviar el correo de recuperación. Verifique la configuración SMTP.';
+                        // error_log($e->getMessage()); // Descomentar para depurar
+                    }
+                } else {
+                    // Mensaje genérico para evitar enumeración de cuentas
+                    $_SESSION['exito'] = 'Si los datos coinciden con un usuario registrado, hemos enviado un enlace de recuperación a tu correo.';
                 }
-                // Mensaje genérico para evitar enumeración de cuentas
-                $_SESSION['exito'] = 'Si los datos coinciden con un usuario registrado, hemos enviado un enlace de recuperación a tu correo.';
             }
         }
         require_once __DIR__ . '/../views/recuperar_password.php';
@@ -232,7 +195,7 @@ class AuthController {
         
         if (empty($token)) {
             $_SESSION['error'] = 'Enlace de recuperación inválido o faltante.';
-            header('Location: ' . BASE_URL . 'usuario/login');
+            header('Location: ' . BASE_URL . 'login');
             exit;
         }
 
@@ -243,7 +206,7 @@ class AuthController {
 
         if (!$row) {
             $_SESSION['error'] = 'El enlace de recuperación no es válido o ha expirado.';
-            header('Location: ' . BASE_URL . 'usuario/login');
+            header('Location: ' . BASE_URL . 'login');
             exit;
         }
 
@@ -261,7 +224,7 @@ class AuthController {
                 $stmtUpdate->execute(['pass' => $hash, 'id' => $row['id']]);
                 
                 $_SESSION['exito'] = 'Tu contraseña ha sido restablecida con éxito. Puedes iniciar sesión.';
-                header('Location: ' . BASE_URL . 'usuario/login');
+                header('Location: ' . BASE_URL . 'login?password_updated=1');
                 exit;
             }
         }

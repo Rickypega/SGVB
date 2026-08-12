@@ -228,9 +228,32 @@ class Usuario {
         
         $hashPassword = password_hash($passwordTextoPlano, PASSWORD_DEFAULT);
         $cedulaHash = hash('sha256', $cedula);
-        // Al registrar, correo_verificado es 0 hasta que el usuario lo active
-        $cedulaVerificada = 1;
-        $correoVerificado = 0;
+        
+        // 1. Verificación de duplicados antes de insertar (Seguro si la tabla está vacía)
+        $stmtDup = $pdo->prepare("SELECT id FROM usuarios WHERE cedula = :cedula OR correo = :correo LIMIT 1");
+        $stmtDup->execute([
+            'cedula' => $cedulaHash,
+            'correo' => $correo
+        ]);
+        if ($stmtDup->fetch()) {
+            throw new Exception("La cédula o el correo electrónico ya se encuentran registrados.");
+        }
+
+        // 2. Consulta de cantidad total de usuarios
+        $totalUsuarios = (int) $pdo->query("SELECT COUNT(*) as total FROM usuarios")->fetch()['total'];
+
+        if ($totalUsuarios === 0) {
+            // Es el primer usuario: Administrador, todo verificado
+            $rolId = 1;
+            $cedulaVerificada = 1;
+            $correoVerificado = 1;
+        } else {
+            // Usuarios subsecuentes: Lector estándar, verificaciones pendientes (o según flujo)
+            $rolId = 2; // Forzar a Lector
+            $cedulaVerificada = 1; // JCE asume válido
+            $correoVerificado = 0; // Espera activación por correo
+        }
+
         $saldoInicial = 30.00; // Bono inicial de billetera virtual para nuevas cuentas
 
         $sql = "INSERT INTO usuarios (nombre, correo, password, cedula, fecha_nacimiento, rol_id, cedula_verificada, correo_verificado, token_verificacion, saldo, fecha_registro) 
@@ -254,8 +277,12 @@ class Usuario {
             $nuevoId = (int)$pdo->lastInsertId();
             return self::porId($nuevoId);
         } catch (PDOException $e) {
+            // Manejo de código de error de duplicidad en SQL
+            if ($e->getCode() == 23000) {
+                throw new Exception("El usuario ya se encuentra registrado (Clave duplicada).");
+            }
             error_log("Error registrando usuario: " . $e->getMessage());
-            return null;
+            throw $e; // Lanzamos la excepción real si es otro error de base de datos
         }
     }
 

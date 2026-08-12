@@ -118,6 +118,7 @@ $router->post('login', 'AuthController@login');
 $router->get('registro', 'AuthController@registro');
 $router->post('registro', 'AuthController@registro');
 $router->get('logout', 'AuthController@logout');
+$router->get('verificar', 'UsuarioController@verificarCorreo');
 
 // Rutas Lector Estándar & Visor Digital
 $router->get('estandar/panel', 'PrestamosController@panel');
@@ -139,12 +140,11 @@ $router->get('libreria/mis_libros', 'PrestamosController@miLibreria');
 $router->get('mi_libreria', 'PrestamosController@miLibreria');
 $router->get('api/recurso', 'RecursosController@detalleJson');
 
-// Rutas Configuración de Usuario (Tarea 12)
-$router->get('usuario/activar', 'AuthController@activarCuenta');
+// Rutas Configuración de Usuario 
 $router->get('usuario/recuperar_password', 'AuthController@recuperarPassword');
 $router->post('usuario/recuperar_password', 'AuthController@recuperarPassword');
-$router->get('usuario/restablecer_password', 'AuthController@restablecerPassword');
-$router->post('usuario/restablecer_password', 'AuthController@restablecerPassword');
+$router->get('restablecer-password', 'AuthController@restablecerPassword');
+$router->post('restablecer-password', 'AuthController@restablecerPassword');
 $router->get('usuario/configuracion', 'UsuarioController@configuracion');
 $router->post('usuario/actualizar', 'UsuarioController@actualizarDatos');
 $router->post('usuario/password', 'UsuarioController@cambiarPassword');
@@ -163,9 +163,9 @@ $router->get('admin/exportar', 'AdminController@exportarReporte');
 $router->get('admin/billetera', 'AdminController@billetera');
 $router->post('admin/billetera', 'AdminController@billetera');
 
-// Rutas Legales y Contacto (Tarea 13)
+// Rutas Legales y Contacto 
 $router->get('legal/privacidad', 'RecursosController@legalPrivacidad');
 $router->get('legal/terminos', 'RecursosController@legalTerminos');
 $router->get('legal/devoluciones', 'RecursosController@legalDevoluciones');
 $router->get('contacto', 'RecursosController@contacto');
-$router->post('contacto', 'RecursosController@procesarContacto');
+$router->post('contacto/procesar', 'RecursosController@procesarContacto');

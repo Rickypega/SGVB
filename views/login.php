@@ -43,22 +43,7 @@ require_once __DIR__ . '/../layouts/header.php';
                     </div>
                 </form>
 
-                <!-- Cuentas de demostración de acceso rápido -->
-                <div class="mt-4 pt-3 border-top border-secondary">
-                    <div class="text-center small text-muted mb-2"><i class="bi bi-info-circle text-info me-1"></i> Cuentas de Demostración</div>
-                    <div class="row g-2">
-                        <div class="col-6">
-                            <button type="button" class="btn btn-sm btn-outline-custom w-100 py-1" onclick="document.getElementById('correo').value='admin@sgbv.com'; document.getElementById('password').value='admin123';">
-                                <i class="bi bi-shield-lock me-1"></i> Admin Demo
-                            </button>
-                        </div>
-                        <div class="col-6">
-                            <button type="button" class="btn btn-sm btn-outline-custom w-100 py-1" onclick="document.getElementById('correo').value='lector@sgbv.com'; document.getElementById('password').value='lector123';">
-                                <i class="bi bi-person me-1"></i> Lector Demo
-                            </button>
-                        </div>
-                    </div>
-                </div>
+
 
                 <div class="text-center mt-4 pt-3 border-top border-secondary">
                     <p class="text-muted mb-0 small">¿Aún no tienes cuenta en SGBV? <a href="<?= BASE_URL ?>registro" class="text-primary fw-bold text-decoration-none">Regístrate aquí</a></p>

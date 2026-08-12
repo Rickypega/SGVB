@@ -119,7 +119,15 @@ class RecursosController {
             exit;
         }
 
-        $_SESSION['exito'] = '¡Gracias por contactarnos, ' . htmlspecialchars($nombre) . '! Hemos recibido tu mensaje y te responderemos pronto a ' . htmlspecialchars($correo) . '.';
+        require_once __DIR__ . '/../libs/MailService.php';
+
+        try {
+            MailService::enviarCorreoContacto($nombre, $correo, $asunto, $mensaje);
+            $_SESSION['exito'] = '¡Gracias por contactarnos, ' . htmlspecialchars($nombre) . '! Hemos recibido tu mensaje y te responderemos pronto a ' . htmlspecialchars($correo) . '.';
+        } catch (\Exception $e) {
+            $_SESSION['error'] = 'Hubo un error al enviar tu mensaje. Inténtalo de nuevo más tarde o verifica tu conexión.';
+        }
+
         header('Location: ' . BASE_URL . 'contacto');
         exit;
     }

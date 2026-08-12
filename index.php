@@ -1,6 +1,11 @@
 <?php
 declare(strict_types=1);
 
+// Mostrar errores temporalmente para pruebas en producción
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
 // Cargar dependencias de configuración y modelos de negocio antes de iniciar sesión
 require_once __DIR__ . '/config/db.php';
 require_once __DIR__ . '/models/Rol.php';
