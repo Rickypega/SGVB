@@ -43,7 +43,7 @@ $usuarioActual = (isset($_SESSION['usuario']) && $_SESSION['usuario'] instanceof
                     <a class="nav-link" href="<?= BASE_URL ?>home"><i class="bi bi-grid-fill me-1"></i> Catálogo</a>
                 </li>
                 <?php if ($usuarioActual): ?>
-                    <?php if ($usuarioActual->rol_id === 1): ?>
+                    <?php if (in_array($usuarioActual->rol_id, [1, 3])): ?>
                         <li class="nav-item">
                             <a class="nav-link" href="<?= BASE_URL ?>admin/dashboard"><i class="bi bi-speedometer2 me-1"></i> Dashboard</a>
                         </li>
@@ -83,13 +83,17 @@ $usuarioActual = (isset($_SESSION['usuario']) && $_SESSION['usuario'] instanceof
                             <span><?= htmlspecialchars($usuarioActual->nombre) ?></span>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end dropdown-menu-dark shadow-lg border border-secondary rounded-3 mt-2" aria-labelledby="userMenu">
-                            <?php if ($usuarioActual->rol_id === 1): ?>
+                            <?php if (in_array($usuarioActual->rol_id, [1, 3])): ?>
                                 <li><a class="dropdown-item" href="<?= BASE_URL ?>admin/dashboard"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a></li>
                                 <li><a class="dropdown-item" href="<?= BASE_URL ?>libreria/mis_libros"><i class="bi bi-collection-play-fill me-2"></i> Mi Librería</a></li>
                                 <li><a class="dropdown-item" href="<?= BASE_URL ?>admin/recursos"><i class="bi bi-journal-plus me-2"></i> Gestión de Recursos</a></li>
                                 <li><a class="dropdown-item" href="<?= BASE_URL ?>admin/historial"><i class="bi bi-clock-history me-2"></i> Historial de Préstamos</a></li>
                                 <li><a class="dropdown-item" href="<?= BASE_URL ?>admin/reportes"><i class="bi bi-file-earmark-bar-graph me-2"></i> Reportes PDF/Excel</a></li>
                                 <li><a class="dropdown-item" href="<?= BASE_URL ?>admin/billetera"><i class="bi bi-wallet2 me-2"></i> Mi Billetera</a></li>
+                                <?php if ($usuarioActual->rol_id === 1): ?>
+                                    <li><hr class="dropdown-divider border-secondary"></li>
+                                    <li><a class="dropdown-item" href="<?= BASE_URL ?>admin/usuarios"><i class="bi bi-people-fill me-2"></i> Gestión de Usuarios</a></li>
+                                <?php endif; ?>
                             <?php else: ?>
                                 <li><a class="dropdown-item" href="<?= BASE_URL ?>home"><i class="bi bi-grid me-2"></i> Catálogo Literario</a></li>
                                 <li><a class="dropdown-item" href="<?= BASE_URL ?>estandar/panel"><i class="bi bi-bookmark-star me-2"></i> Mi Panel & Préstamos</a></li>

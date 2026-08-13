@@ -58,15 +58,27 @@ class Recurso {
     /**
      * Obtiene todo el catálogo de recursos con el nombre de su categoría
      *
+     * @param string|null $fechaInicio
+     * @param string|null $fechaFin
      * @return array<int, Recurso>
      */
-    public static function obtenerTodos(): array {
+    public static function obtenerTodos(?string $fechaInicio = null, ?string $fechaFin = null): array {
         $pdo = Database::getConnection();
         $sql = "SELECT r.*, c.nombre AS categoria_nombre 
                 FROM recursos r 
-                INNER JOIN categorias c ON r.categoria_id = c.id 
-                ORDER BY r.id ASC";
-        $stmt = $pdo->query($sql);
+                INNER JOIN categorias c ON r.categoria_id = c.id";
+        
+        $params = [];
+        if (!empty($fechaInicio) && !empty($fechaFin)) {
+            $sql .= " WHERE DATE(r.fecha_creacion) BETWEEN :inicio AND :fin";
+            $params['inicio'] = $fechaInicio;
+            $params['fin'] = $fechaFin;
+        }
+        
+        $sql .= " ORDER BY r.titulo ASC";
+        
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
 
         $recursos = [];
         while ($row = $stmt->fetch()) {

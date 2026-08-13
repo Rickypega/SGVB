@@ -19,6 +19,26 @@ require_once __DIR__ . '/../../layouts/header.php';
         </div>
     </div>
 
+    <!-- Filtros de Fecha Globales para Reportes -->
+    <div class="glass-card p-4 mb-4 border-primary border-start border-4">
+        <h6 class="text-light fw-bold mb-3"><i class="bi bi-calendar-range me-2"></i>Filtros de Exportación</h6>
+        <form id="filtroFechasForm" class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label for="fecha_inicio" class="form-label small text-secondary">Fecha Inicio</label>
+                <input type="date" class="form-control bg-dark text-light border-secondary" id="fecha_inicio" name="fecha_inicio">
+            </div>
+            <div class="col-md-4">
+                <label for="fecha_fin" class="form-label small text-secondary">Fecha Fin</label>
+                <input type="date" class="form-control bg-dark text-light border-secondary" id="fecha_fin" name="fecha_fin">
+            </div>
+            <div class="col-md-4">
+                <button type="button" class="btn btn-outline-info w-100" id="btnAplicarFiltros">
+                    <i class="bi bi-funnel"></i> Aplicar a enlaces de descarga
+                </button>
+            </div>
+        </form>
+    </div>
+
     <!-- Tarjetas de Exportación Rápida -->
     <div class="row g-4 mb-5">
         <div class="col-md-4">
@@ -31,10 +51,10 @@ require_once __DIR__ . '/../../layouts/header.php';
                     <p class="text-secondary small">Descarga el catálogo completo de libros, precios, existencias e ISBN registrados.</p>
                 </div>
                 <div class="d-flex gap-2 mt-3 pt-3 border-top border-secondary">
-                    <a href="<?= BASE_URL ?>admin/reportes/exportar?tipo=recursos&formato=csv" class="btn btn-gradient-secondary btn-sm flex-fill d-flex align-items-center justify-content-center gap-1">
+                    <a href="<?= BASE_URL ?>admin/reportes/exportar?tipo=recursos&formato=csv" class="btn btn-gradient-secondary btn-sm flex-fill d-flex align-items-center justify-content-center gap-1 export-link">
                         <i class="bi bi-file-earmark-excel"></i> Excel (CSV)
                     </a>
-                    <a href="<?= BASE_URL ?>admin/reportes/exportar?tipo=recursos&formato=pdf" target="_blank" class="btn btn-outline-custom btn-sm flex-fill d-flex align-items-center justify-content-center gap-1">
+                    <a href="<?= BASE_URL ?>admin/reportes/exportar?tipo=recursos&formato=pdf" target="_blank" class="btn btn-outline-custom btn-sm flex-fill d-flex align-items-center justify-content-center gap-1 export-link">
                         <i class="bi bi-file-earmark-pdf"></i> PDF / Print
                     </a>
                 </div>
@@ -51,10 +71,10 @@ require_once __DIR__ . '/../../layouts/header.php';
                     <p class="text-secondary small">Reporte completo de cuentas, saldos en billetera, cédulas e historiales de registro.</p>
                 </div>
                 <div class="d-flex gap-2 mt-3 pt-3 border-top border-secondary">
-                    <a href="<?= BASE_URL ?>admin/reportes/exportar?tipo=usuarios&formato=csv" class="btn btn-gradient-secondary btn-sm flex-fill d-flex align-items-center justify-content-center gap-1">
+                    <a href="<?= BASE_URL ?>admin/reportes/exportar?tipo=usuarios&formato=csv" class="btn btn-gradient-secondary btn-sm flex-fill d-flex align-items-center justify-content-center gap-1 export-link">
                         <i class="bi bi-file-earmark-excel"></i> Excel (CSV)
                     </a>
-                    <a href="<?= BASE_URL ?>admin/reportes/exportar?tipo=usuarios&formato=pdf" target="_blank" class="btn btn-outline-custom btn-sm flex-fill d-flex align-items-center justify-content-center gap-1">
+                    <a href="<?= BASE_URL ?>admin/reportes/exportar?tipo=usuarios&formato=pdf" target="_blank" class="btn btn-outline-custom btn-sm flex-fill d-flex align-items-center justify-content-center gap-1 export-link">
                         <i class="bi bi-file-earmark-pdf"></i> PDF / Print
                     </a>
                 </div>
@@ -71,10 +91,10 @@ require_once __DIR__ . '/../../layouts/header.php';
                     <p class="text-secondary small">Historial auditable de rentas, devoluciones, fechas límites y montos cobrados.</p>
                 </div>
                 <div class="d-flex gap-2 mt-3 pt-3 border-top border-secondary">
-                    <a href="<?= BASE_URL ?>admin/reportes/exportar?tipo=historial&formato=csv" class="btn btn-gradient-secondary btn-sm flex-fill d-flex align-items-center justify-content-center gap-1">
+                    <a href="<?= BASE_URL ?>admin/reportes/exportar?tipo=historial&formato=csv" class="btn btn-gradient-secondary btn-sm flex-fill d-flex align-items-center justify-content-center gap-1 export-link">
                         <i class="bi bi-file-earmark-excel"></i> Excel (CSV)
                     </a>
-                    <a href="<?= BASE_URL ?>admin/reportes/exportar?tipo=historial&formato=pdf" target="_blank" class="btn btn-outline-custom btn-sm flex-fill d-flex align-items-center justify-content-center gap-1">
+                    <a href="<?= BASE_URL ?>admin/reportes/exportar?tipo=historial&formato=pdf" target="_blank" class="btn btn-outline-custom btn-sm flex-fill d-flex align-items-center justify-content-center gap-1 export-link">
                         <i class="bi bi-file-earmark-pdf"></i> PDF / Print
                     </a>
                 </div>
@@ -145,5 +165,42 @@ require_once __DIR__ . '/../../layouts/header.php';
         </div>
     </div>
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const btnAplicar = document.getElementById('btnAplicarFiltros');
+    const inputInicio = document.getElementById('fecha_inicio');
+    const inputFin = document.getElementById('fecha_fin');
+    const exportLinks = document.querySelectorAll('.export-link');
+    
+    // Almacenar URLs originales
+    exportLinks.forEach(link => {
+        link.dataset.originalUrl = link.href;
+    });
+
+    btnAplicar.addEventListener('click', function() {
+        const fInicio = inputInicio.value;
+        const fFin = inputFin.value;
+        
+        exportLinks.forEach(link => {
+            let base = link.dataset.originalUrl;
+            if (fInicio && fFin) {
+                link.href = base + '&fecha_inicio=' + encodeURIComponent(fInicio) + '&fecha_fin=' + encodeURIComponent(fFin);
+            } else {
+                link.href = base; // Resetear si se borran
+            }
+        });
+        
+        // Efecto visual
+        const icon = this.querySelector('i');
+        icon.className = 'bi bi-check-circle-fill';
+        this.classList.replace('btn-outline-info', 'btn-success');
+        setTimeout(() => {
+            icon.className = 'bi bi-funnel';
+            this.classList.replace('btn-success', 'btn-outline-info');
+        }, 1500);
+    });
+});
+</script>
 
 <?php require_once __DIR__ . '/../../layouts/footer.php'; ?>

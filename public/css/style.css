@@ -536,6 +536,201 @@ footer {
     background-color: var(--bg-surface-elevated) !important;
     color: var(--primary-color) !important;
 }
+    border: 1px solid var(--border-color);
+    border-radius: 1.25rem;
+    padding: 1.75rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-4px);
+}
+
+.stat-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.75rem;
+    margin-bottom: 1rem;
+}
+
+.stat-icon-primary {
+    background: rgba(99, 102, 241, 0.15);
+    color: var(--primary-color);
+}
+
+.stat-icon-secondary {
+    background: rgba(6, 182, 212, 0.15);
+    color: var(--secondary-color);
+}
+
+.stat-icon-success {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--success-color);
+}
+
+.stat-icon-accent {
+    background: rgba(244, 63, 94, 0.15);
+    color: var(--accent-color);
+}
+
+/* Tablas adaptativas al tema */
+.table,
+.table-custom {
+    --bs-table-bg: var(--bg-surface) !important;
+    --bs-table-accent-bg: transparent !important;
+    --bs-table-striped-bg: var(--bg-surface-elevated) !important;
+    --bs-table-hover-bg: var(--bg-surface-elevated) !important;
+    --bs-table-color: var(--text-primary) !important;
+    color: var(--text-primary) !important;
+    background-color: var(--bg-surface) !important;
+    margin-bottom: 0;
+}
+
+.table> :not(caption)>*>*,
+.table-custom> :not(caption)>*>*,
+.table tbody tr,
+.table tbody td,
+.table-custom tbody tr,
+.table-custom tbody td {
+    background-color: var(--bg-surface) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--border-color) !important;
+}
+
+.table tbody tr:hover>td,
+.table-custom tbody tr:hover>td,
+.table tbody tr:hover,
+.table-custom tbody tr:hover {
+    background-color: var(--bg-surface-elevated) !important;
+    color: var(--primary-color) !important;
+}
+
+.table thead th,
+.table-custom thead th,
+.table thead tr,
+.table-custom thead tr {
+    background-color: var(--bg-main) !important;
+    color: var(--text-primary) !important;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+    border-bottom: 2px solid var(--border-color) !important;
+    padding: 1rem;
+}
+
+/* Modales e inputs en modo oscuro */
+.modal-content {
+    background: var(--bg-surface);
+    border: 1px solid var(--glass-border);
+    border-radius: 1.25rem;
+    color: var(--text-primary);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+}
+
+.modal-header,
+.modal-footer {
+    border-color: var(--border-color);
+}
+
+.form-control,
+.form-select {
+    background-color: var(--bg-surface-elevated);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+}
+
+.form-control::placeholder,
+.form-select::placeholder,
+.search-input::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.7;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: var(--bg-surface-elevated);
+    border-color: var(--primary-color);
+    color: var(--text-primary);
+    box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+}
+
+.form-label {
+    font-weight: 500;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.4s ease forwards;
+}
+
+footer {
+    border-top: 1px solid var(--border-color);
+    padding: 3rem 0 2rem;
+    margin-top: auto;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+
+/* Theme Overrides for Bootstrap Utility Classes */
+.text-muted {
+    color: var(--text-secondary) !important;
+}
+
+[data-theme="light"] .text-light,
+[data-theme="light"] .text-white {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="light"] .bg-dark,
+[data-theme="light"] .text-bg-dark {
+    background-color: var(--bg-surface-elevated) !important;
+    color: var(--text-primary) !important;
+}
+
+[data-theme="light"] .btn-close-white {
+    filter: none !important;
+}
+
+[data-theme="light"] .border-secondary {
+    border-color: var(--border-color) !important;
+}
+
+[data-theme="light"] .dropdown-menu-dark {
+    background-color: var(--bg-surface) !important;
+    border-color: var(--border-color) !important;
+}
+
+[data-theme="light"] .dropdown-menu-dark .dropdown-item {
+    color: var(--text-primary) !important;
+}
+
+[data-theme="light"] .dropdown-menu-dark .dropdown-item:hover {
+    background-color: var(--bg-surface-elevated) !important;
+    color: var(--primary-color) !important;
+}
 
 [data-theme="light"] .dropdown-menu-dark .dropdown-divider {
     border-color: var(--border-color) !important;
@@ -547,3 +742,6 @@ footer {
 .text-info { color: var(--info-color) !important; }
 .text-warning { color: var(--warning-color) !important; }
 .text-danger { color: var(--danger-color) !important; }
+/* Custom Theme Colors */
+.text-theme-primary { color: var(--text-primary) !important; }
+.text-theme-secondary { color: var(--text-secondary) !important; }

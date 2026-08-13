@@ -23,7 +23,7 @@ class Categoria {
      */
     public static function obtenerTodas(): array {
         $pdo = Database::getConnection();
-        $stmt = $pdo->query("SELECT * FROM categorias ORDER BY id ASC");
+        $stmt = $pdo->query("SELECT * FROM categorias ORDER BY nombre ASC");
         return $stmt->fetchAll();
     }
 
@@ -64,6 +64,19 @@ class Categoria {
             error_log("No se pudo eliminar la categoría (recursos vinculados): " . $e->getMessage());
             return false;
         }
+    }
+
+    /**
+     * Verifica si una categoría tiene recursos asociados
+     *
+     * @param int $id
+     * @return bool
+     */
+    public static function tieneRecursos(int $id): bool {
+        $pdo = Database::getConnection();
+        $stmt = $pdo->prepare("SELECT COUNT(*) FROM recursos WHERE categoria_id = :id");
+        $stmt->execute(['id' => $id]);
+        return (int)$stmt->fetchColumn() > 0;
     }
 
     /**

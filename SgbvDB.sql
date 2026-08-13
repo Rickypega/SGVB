@@ -121,13 +121,25 @@ CREATE TABLE `carrito_items` (
   CONSTRAINT `fk_carrito_recurso` FOREIGN KEY (`recurso_id`) REFERENCES `recursos` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+CREATE TABLE `transacciones_saldo` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `admin_id` INT NOT NULL,
+  `usuario_destino_id` INT NOT NULL,
+  `monto` DECIMAL(10, 2) NOT NULL,
+  `fecha` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `fk_transacciones_admin` FOREIGN KEY (`admin_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `fk_transacciones_destino` FOREIGN KEY (`usuario_destino_id`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 -- ============================================================================
 -- ESTRUCTURA INICIAL BASE (ROLES, PERMISOS Y CATEGORÍAS)
 -- ============================================================================
 
 INSERT INTO `roles` (`id`, `nombre`, `descripcion`) VALUES
 (1, 'Administrador', 'Control total de la plataforma, inventario de recursos y analíticas de usuarios.'),
-(2, 'Lector Estándar', 'Usuario con acceso al catálogo para consultar y rentar recursos digitales.');
+(2, 'Lector Estándar', 'Usuario con acceso al catálogo para consultar y rentar recursos digitales.'),
+(3, 'Gerente', 'Control operativo limitado. Sin gestión de usuarios.');
 
 INSERT INTO `permisos` (`id`, `nombre`, `descripcion`) VALUES
 (1, 'gestionar_recursos', 'Crear, editar y eliminar libros, audiolibros y artículos'),
@@ -137,7 +149,8 @@ INSERT INTO `permisos` (`id`, `nombre`, `descripcion`) VALUES
 
 INSERT INTO `rol_permiso` (`rol_id`, `permiso_id`) VALUES
 (1, 1), (1, 2), (1, 3), (1, 4),
-(2, 3), (2, 4);
+(2, 3), (2, 4),
+(3, 1), (3, 2);
 
 INSERT INTO `categorias` (`id`, `nombre`) VALUES
 (1, 'Ciencia Ficción'),

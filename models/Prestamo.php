@@ -437,17 +437,29 @@ class Prestamo {
     /**
      * Obtiene el historial global de todos los préstamos para el administrador
      *
+     * @param string|null $fechaInicio
+     * @param string|null $fechaFin
      * @return array<int, Prestamo>
      */
-    public static function obtenerTodos(): array {
+    public static function obtenerTodos(?string $fechaInicio = null, ?string $fechaFin = null): array {
         $pdo = Database::getConnection();
         $sql = "SELECT p.*, r.titulo AS recurso_titulo, r.autor AS recurso_autor, r.portada AS recurso_portada, r.tipo AS recurso_tipo,
                        u.nombre AS usuario_nombre, u.correo AS usuario_correo 
                 FROM prestamos p 
                 INNER JOIN recursos r ON p.recurso_id = r.id 
-                INNER JOIN usuarios u ON p.usuario_id = u.id 
-                ORDER BY p.id ASC";
-        $stmt = $pdo->query($sql);
+                INNER JOIN usuarios u ON p.usuario_id = u.id";
+        
+        $params = [];
+        if (!empty($fechaInicio) && !empty($fechaFin)) {
+            $sql .= " WHERE DATE(p.fecha_prestamo) BETWEEN :inicio AND :fin";
+            $params['inicio'] = $fechaInicio;
+            $params['fin'] = $fechaFin;
+        }
+        
+        $sql .= " ORDER BY p.fecha_prestamo DESC, r.titulo ASC";
+        
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
 
         $prestamos = [];
         while ($row = $stmt->fetch()) {

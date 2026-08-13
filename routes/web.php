@@ -162,6 +162,10 @@ $router->get('admin/reportes/exportar', 'AdminController@exportarReporte');
 $router->get('admin/exportar', 'AdminController@exportarReporte');
 $router->get('admin/billetera', 'AdminController@billetera');
 $router->post('admin/billetera', 'AdminController@billetera');
+$router->get('admin/usuarios', 'AdminController@usuarios');
+$router->post('admin/usuarios/guardar', 'AdminController@guardarUsuario');
+$router->post('admin/usuarios/eliminar', 'AdminController@eliminarUsuario');
+$router->post('admin/transferir-creditos', 'AdminController@transferirCreditos');
 
 // Rutas Legales y Contacto 
 $router->get('legal/privacidad', 'RecursosController@legalPrivacidad');

@@ -289,11 +289,25 @@ class Usuario {
     /**
      * Obtiene todos los usuarios registrados
      *
+     * @param string|null $fechaInicio
+     * @param string|null $fechaFin
      * @return array<int, Usuario>
      */
-    public static function obtenerTodos(): array {
+    public static function obtenerTodos(?string $fechaInicio = null, ?string $fechaFin = null): array {
         $pdo = Database::getConnection();
-        $stmt = $pdo->query("SELECT * FROM usuarios ORDER BY id ASC");
+        $sql = "SELECT * FROM usuarios";
+        $params = [];
+        
+        if (!empty($fechaInicio) && !empty($fechaFin)) {
+            $sql .= " WHERE DATE(fecha_registro) BETWEEN :inicio AND :fin";
+            $params['inicio'] = $fechaInicio;
+            $params['fin'] = $fechaFin;
+        }
+        
+        $sql .= " ORDER BY nombre ASC";
+        
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute($params);
         
         $usuarios = [];
         while ($row = $stmt->fetch()) {
@@ -340,18 +354,7 @@ class Usuario {
             $row['expiracion_token'] ?? null
         );
     }
-    
-    public static function eliminar(int $id): bool {
-        $pdo = Database::getConnection();
-        try {
-            $stmt = $pdo->prepare("DELETE FROM usuarios WHERE id = :id");
-            $stmt->execute(['id' => $id]);
-            return true;
-        } catch (PDOException $e) {
-            error_log("Error eliminando usuario: " . $e->getMessage());
-            return false;
-        }
-    }
+
 
     /**
      * Tarea 12: Actualiza los datos de perfil del usuario (nombre, correo, fecha de nacimiento) verificando contraseña
@@ -444,6 +447,99 @@ class Usuario {
                 $pdo->rollBack();
             }
             error_log("Error al eliminar cuenta: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Obtiene el listado de usuarios que pertenecen al Staff (Administradores y Gerentes)
+     *
+     * @return array<int, Usuario>
+     */
+    public static function obtenerStaff(): array {
+        $pdo = Database::getConnection();
+        $stmt = $pdo->query("SELECT * FROM usuarios WHERE rol_id IN (1, 3) ORDER BY nombre ASC");
+        
+        $usuarios = [];
+        while ($row = $stmt->fetch()) {
+            $usuarios[] = self::crearDesdeArray($row);
+        }
+        return $usuarios;
+    }
+
+    /**
+     * Crea un usuario tipo Staff (Admin o Gerente)
+     */
+    public static function crearStaff(string $nombre, string $correo, string $passwordTextoPlano, int $rolId): bool {
+        $pdo = Database::getConnection();
+        $hashPassword = password_hash($passwordTextoPlano, PASSWORD_DEFAULT);
+        
+        // Simular cédula o pedirla (usaremos un hash de tiempo por simplicidad si no se pide)
+        $cedulaFalsa = hash('sha256', uniqid('ced_', true));
+        $fechaNacimiento = '1990-01-01'; // Default
+        
+        try {
+            $stmt = $pdo->prepare("INSERT INTO usuarios (nombre, correo, password, cedula, fecha_nacimiento, rol_id, cedula_verificada, correo_verificado, saldo, fecha_registro) 
+                                   VALUES (:nombre, :correo, :password, :cedula, :fecha_nacimiento, :rol_id, 1, 1, 0, NOW())");
+            return $stmt->execute([
+                'nombre' => trim($nombre),
+                'correo' => trim($correo),
+                'password' => $hashPassword,
+                'cedula' => $cedulaFalsa,
+                'fecha_nacimiento' => $fechaNacimiento,
+                'rol_id' => $rolId
+            ]);
+        } catch (PDOException $e) {
+            error_log("Error al crear staff: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Actualiza un usuario tipo Staff (Admin o Gerente)
+     */
+    public static function actualizarStaff(int $id, string $nombre, string $correo, int $rolId, ?string $passwordTextoPlano = null): bool {
+        $pdo = Database::getConnection();
+        
+        try {
+            if ($passwordTextoPlano) {
+                $hashPassword = password_hash($passwordTextoPlano, PASSWORD_DEFAULT);
+                $stmt = $pdo->prepare("UPDATE usuarios SET nombre = :nombre, correo = :correo, rol_id = :rol_id, password = :password WHERE id = :id");
+                return $stmt->execute([
+                    'nombre' => trim($nombre),
+                    'correo' => trim($correo),
+                    'rol_id' => $rolId,
+                    'password' => $hashPassword,
+                    'id' => $id
+                ]);
+            } else {
+                $stmt = $pdo->prepare("UPDATE usuarios SET nombre = :nombre, correo = :correo, rol_id = :rol_id WHERE id = :id");
+                return $stmt->execute([
+                    'nombre' => trim($nombre),
+                    'correo' => trim($correo),
+                    'rol_id' => $rolId,
+                    'id' => $id
+                ]);
+            }
+        } catch (PDOException $e) {
+            error_log("Error al actualizar staff: " . $e->getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Elimina cualquier usuario (para el CRUD de gestión de usuarios)
+     */
+    public static function eliminar(int $id): bool {
+        if ($id === 1) {
+            return false; // Nunca eliminar al Super Admin
+        }
+        $pdo = Database::getConnection();
+        try {
+            $stmt = $pdo->prepare("DELETE FROM usuarios WHERE id = :id");
+            return $stmt->execute(['id' => $id]);
+        } catch (PDOException $e) {
+            error_log("Error al eliminar usuario: " . $e->getMessage());
             return false;
         }
     }

@@ -125,15 +125,15 @@ require_once __DIR__ . '/../../layouts/header.php';
                 <h6 class="text-secondary text-uppercase fw-bold small mb-3">Editar Categorías Existentes en Catálogo</h6>
                 <div class="d-flex flex-column gap-2 max-h-300 overflow-auto p-2 glass-card border-secondary">
                     <?php if (!empty($categorias) && is_array($categorias)): ?>
-                        <?php foreach ($categorias as $cat): ?>
+                        <?php $i = 1; foreach ($categorias as $cat): ?>
                             <?php $catId = $cat['id'] ?? $cat->id ?? 0; $catNombre = htmlspecialchars($cat['nombre'] ?? $cat->nombre ?? ''); ?>
                             <form action="<?= BASE_URL ?>admin/categorias/editar" method="POST" class="d-flex align-items-center justify-content-between gap-2 p-2 bg-dark rounded border border-secondary">
                                 <input type="hidden" name="id" value="<?= $catId ?>">
                                 <div class="d-flex align-items-center gap-2 flex-grow-1">
-                                    <span class="badge bg-secondary">#<?= $catId ?></span>
-                                    <input type="text" class="form-control form-control-sm bg-transparent border-0 text-light fw-bold" name="nombre" value="<?= $catNombre ?>" required>
+                                    <span class="badge bg-secondary">#<?= $i++ ?></span>
+                                    <input type="text" class="form-control form-control-sm bg-transparent border-0 text-light fw-bold" name="nombre" value="<?= $catNombre ?>" placeholder="(Dejar vacío para eliminar)" title="Deja en blanco para borrar la categoría">
                                 </div>
-                                <button type="submit" class="btn btn-sm btn-outline-info py-1 px-2" title="Guardar Cambio de Nombre">
+                                <button type="submit" class="btn btn-sm btn-outline-info py-1 px-2" title="Guardar Cambio o Eliminar">
                                     <i class="bi bi-check-lg"></i> Guardar
                                 </button>
                             </form>
