@@ -10,9 +10,10 @@ class Database {
 
     // Configuración para Producción (InfinityFree)
     private const DB_HOST = 'sql208.infinityfree.com';
-    private const DB_NAME = 'if0_41631473_sgbv';
-    private const DB_USER = 'if0_41631473';
-    private const DB_PASS = '40230246353';
+    // Estos datos son personales por eso estan vacíos.
+    private const DB_NAME = '';
+    private const DB_USER = '';
+    private const DB_PASS = '';
     private const DB_CHARSET = 'utf8mb4';
 
     /**
